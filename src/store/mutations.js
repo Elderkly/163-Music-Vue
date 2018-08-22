@@ -8,3 +8,5 @@ const mutations = {
         state.user = obj
     }
 }
+
+export default mutations
