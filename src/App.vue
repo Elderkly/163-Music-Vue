@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <div class="search"><div><i class="iconfont icon-fangdajing"></i> Jopurney 很好听哦</div></div>
-    <tab></tab>
+    <div class="search" v-if='login'><div><i class="iconfont icon-fangdajing"></i> Jopurney 很好听哦</div></div>
+    <tab v-if='login'></tab>
     <router-view/>
   </div>
 </template>
 
 <script>
 import tab from 'cpnts/tab/tab'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'App',
+  computed:{
+    ...mapGetters([
+        'login'
+    ])
+  },
   components:{
     tab
   }
