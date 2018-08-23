@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {login} from 'api/login'
+import {setCookie} from 'common/js/cookie'
 import {mapMutations} from 'vuex'
 
 export default {
@@ -62,12 +64,20 @@ export default {
     },
     login(){
       if (this.tel !== null && this.password !== null) {
-        this.setLogin(true)
-        this.$router.push('/index')
+        login(this.tel,this.password).then(res => {
+          // console.log(res)
+          if (res.data.code === 200){
+            setCookie('userId',res.data.account.id,7)
+            this.setLogin(true)
+            this.$router.push('/index')
+          }else {
+            alert('用户名或密码错误')
+          }
+        })
       }
     },
     ...mapMutations({
-      setLogin : 'SET_LOGIN'
+      setLogin:'SET_LOGIN'
     })
   }
 }

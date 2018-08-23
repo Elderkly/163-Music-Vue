@@ -1,6 +1,8 @@
 
 const state = {
-    user:{},    //用户信息
+    user:{
+      userId:null
+    },    //用户信息
     login:false     //登录状态
 }
 

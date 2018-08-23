@@ -8,14 +8,26 @@
 
 <script>
 import tab from 'cpnts/tab/tab'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapMutations} from 'vuex'
+import {getCookie} from 'common/js/cookie'
 
 export default {
-  name: 'App',
   computed:{
     ...mapGetters([
         'login'
     ])
+  },
+  created(){
+    if (getCookie('userId') === null) {
+      this.setLogin(false)
+    }else {
+      this.setLogin(true)
+    }
+  },
+  methods: {
+    ...mapMutations({
+      setLogin:'SET_LOGIN'
+    })
   },
   components:{
     tab

@@ -5,7 +5,7 @@ import index from 'cpnts/index/index'
 import myMusic from 'cpnts/my-music/my-music'
 import search from 'cpnts/search/search'
 import user from 'cpnts/user/user'
-import store from 'src/store'
+import {getCookie} from 'common/js/cookie'
 
 Vue.use(Router)
 
@@ -39,7 +39,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!store.state.login && to.path.indexOf('login') == -1){
+  if (getCookie('userId') === null && to.path.indexOf('login') == -1){
     return next('/login')
   }else {
     return next()
