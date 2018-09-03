@@ -1,13 +1,23 @@
 <template>
   <div id="app">
     <div class="search" v-if='login'><div><i class="iconfont icon-fangdajing"></i> Jopurney 很好听哦</div></div>
-    <tab v-if='login'></tab>
-    <router-view/>
+    <tab v-if='login' :list="['发现','我的','账号']"></tab>
+      <!-- <keep-alive> -->
+        <!-- <router-view/> -->
+        <!-- <index></index>
+        <my-music></my-music>
+        <user></user> -->
+      <!-- </keep-alive> -->
+    <router-view style="position:relative;top:-1px" />
   </div>
 </template>
 
 <script>
 import tab from 'cpnts/tab/tab'
+import index from 'cpnts/index/index'
+import myMusic from 'cpnts/my-music/my-music'
+import user from 'cpnts/user/user'
+
 import {mapGetters,mapMutations} from 'vuex'
 import {getCookie} from 'common/js/cookie'
 
@@ -30,13 +40,18 @@ export default {
     })
   },
   components:{
-    tab
+    tab,
+    index,
+    myMusic,
+    user
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   @import "~common/stylus/variable"
+  #app
+    overflow hidden
   .search
     height 85px
     line-height 85px
