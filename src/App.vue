@@ -8,7 +8,10 @@
         <my-music></my-music>
         <user></user> -->
       <!-- </keep-alive> -->
-    <router-view style="position:relative;top:-1px" />
+    <keep-alive>
+      <router-view style="position:relative;top:-1px" />
+    </keep-alive>
+    
   </div>
 </template>
 

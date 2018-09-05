@@ -11,3 +11,8 @@ export const Home_getPersonalizedList = () => {
   const url = HOST + '/personalized'
   return axios.get(url)
 }
+//  获取推荐新歌曲
+export const Home_getNewList = () => {
+  const url = HOST + '/personalized/newsong'
+  return axios.get(url)
+}
