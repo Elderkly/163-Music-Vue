@@ -1,8 +1,8 @@
 <template>
     <div class="index">
-      <scroll ref="scroll" class="recommend-content" :data="NewList">
+      <scroll ref="scroll" class="recommend-content" :data="NewList" v-if="NewList.length > 1">
         <div>
-          <div class="banner-wrapper" v-if="bannerList.length > 1">
+          <div class="banner-wrapper">
             <slider>
               <div v-for="(item,index) in bannerList" :key="index">
                 <div class="banner-background"></div>
@@ -12,9 +12,9 @@
               </div>
             </slider>
           </div>
-          <div class="loading" v-else>
+          <!-- <div class="loading" v-else>
             <loading></loading>
-          </div>
+          </div> -->
           <div class="button-wrapper">
             <div class="button">
               <div class="icon">
@@ -42,7 +42,8 @@
               <i class="icon-you"></i>
             </div>
             <div class="List-bottom">
-              <div class="List-items" v-for="item in RecommendList" :key="item.id">
+              <div class="List-items" v-for="item in RecommendList" :key="item.id" @click="TomusicList(item.id)">
+                <!-- <router-link tag="div" class="router-tab" to="/musicList"></router-link> -->
                 <img v-lazy="item.picUrl">
                 <p>{{ item.name }}</p>
                 <div class="items-playCount">
@@ -67,6 +68,8 @@
           </div>
         </div>
       </scroll>
+      <download v-else></download>
+      <router-view></router-view>
     </div>
 </template>
 
@@ -74,8 +77,11 @@
 import scroll from 'base/scroll/scroll'
 import Slider from 'base/slider/slider'
 import loading from 'base/loading/loading'
+import download from 'base/download/download'
 import {Home_getBanner,Home_getPersonalizedList,Home_getNewList} from 'api/index'
 import {CODE} from 'common/js/config'
+import {setListenNum} from 'common/js/number'
+import {mapMutations} from 'vuex'
 
 export default {
     data() {
@@ -87,18 +93,23 @@ export default {
     },
     created(){
       this._getBanner()
-      this._getRecommendList()
     },
     methods:{
+      TomusicList(id) {
+        this.setListId(id)
+        this.$router.push('/musicList')
+      },
       _getBanner() {
         Home_getBanner().then(res => {
           if (res.data.code === CODE) {
             this.bannerList = res.data.banners
           }
+          this._getRecommendList()
         })
       },
       _getRecommendList() {
         Home_getPersonalizedList().then(res => {
+          // console.log(res)
           if (res.data.code === CODE) {
             const resData = res.data.result.slice(0,6)
             const Json = []
@@ -107,12 +118,12 @@ export default {
               _Array.id = resData[x].id
               _Array.picUrl = resData[x].picUrl
               _Array.name = resData[x].name
-              _Array.playCount = this.setListenNum(resData[x].playCount)
+              _Array.playCount = setListenNum(resData[x].playCount)
               Json.push(_Array)
             }
             this.RecommendList = Json
-            this._getNewList()
           }
+          this._getNewList()
         })
       },
       _getNewList() {
@@ -132,20 +143,15 @@ export default {
           }
         })
       },
-      setListenNum(number) {
-        let num 
-        if (number > 100000) {
-          num = parseInt(number / 10000)
-        }else {
-          return parseInt(number)
-        }
-        return num > 10000 ? num + '亿' : num + '万'
-      }
+      ...mapMutations({
+        setListId:'SET_LIST_ID'
+      })
     },
     components: {
       scroll,
       Slider,
-      loading
+      loading,
+      download
     }
 
 }
@@ -260,5 +266,8 @@ export default {
           i
             font-size 22px
         
-
+  .router-tab
+    position absolute 
+    height 100%
+    width 100%
 </style>

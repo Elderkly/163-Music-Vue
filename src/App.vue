@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div class="search" v-if='login'><div><i class="iconfont icon-fangdajing"></i> Jopurney 很好听哦</div></div>
-    <tab v-if='login' :list="['发现','我的','账号']"></tab>
+    <div class="search" ><div><i class="iconfont icon-fangdajing"></i> Jopurney 很好听哦</div></div>
+    <tab :list="['发现','我的','账号']"></tab>
       <!-- <keep-alive> -->
         <!-- <router-view/> -->
         <!-- <index></index>
@@ -21,26 +21,20 @@ import index from 'cpnts/index/index'
 import myMusic from 'cpnts/my-music/my-music'
 import user from 'cpnts/user/user'
 
-import {mapGetters,mapMutations} from 'vuex'
+// import {mapGetters,mapMutations} from 'vuex'
 import {getCookie} from 'common/js/cookie'
 
 export default {
   computed:{
-    ...mapGetters([
-        'login'
-    ])
+
   },
   created(){
     if (getCookie('userId') === null) {
-      this.setLogin(false)
-    }else {
-      this.setLogin(true)
+      this.$router.push('/login')
     }
   },
   methods: {
-    ...mapMutations({
-      setLogin:'SET_LOGIN'
-    })
+
   },
   components:{
     tab,

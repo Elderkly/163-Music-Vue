@@ -5,6 +5,7 @@ import index from 'cpnts/index/index'
 import myMusic from 'cpnts/my-music/my-music'
 import search from 'cpnts/search/search'
 import user from 'cpnts/user/user'
+import musicList from 'cpnts/musicList/musicList'
 import {getCookie} from 'common/js/cookie'
 
 Vue.use(Router)
@@ -22,6 +23,10 @@ const router = new Router({
     {
       path: '/login',
       component: login
+    },
+    {
+      path: '/musicList',
+      component: musicList
     },
     {
       path: '/my-music',

@@ -22,6 +22,7 @@
       <button :class="loginClass" @click='login'>
         登录
       </button>
+      <loading v-if="loginSwitch"></loading>
     </div>
   </transition>
 </template>
@@ -30,19 +31,24 @@
 import {login} from 'api/login'
 import {setCookie} from 'common/js/cookie'
 import {mapMutations} from 'vuex'
+import loading from 'base/loading/loading'
 
 export default {
   data(){
     return {
       focus:false,
       tel:null,
-      password:null
+      password:null,
+      loginSwitch:false
     }
   },
   computed:{
     loginClass(){
       return this.tel !== null && this.password !== null ? 'button' : 'button falseLogin'
     }
+  },
+  components: {
+    loading
   },
   methods:{
     _focus(e){
@@ -64,12 +70,16 @@ export default {
     },
     login(){
       if (this.tel !== null && this.password !== null) {
+        this.loginSwitch = true
         login(this.tel,this.password).then(res => {
           // console.log(res)
+          this.loginSwitch = false
           if (res.data.code === 200){
             setCookie('userId',res.data.account.id,7)
-            this.setLogin(true)
+            // this.setLogin(true)
             this.$router.push('/index')
+          }else if (res.data.code === 415) {
+            alert('登录过于频繁 请稍候再试')
           }else {
             alert('用户名或密码错误')
           }
@@ -86,6 +96,13 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable.styl'
   #login
+    position fixed!important
+    top 0!important
+    bottom 0
+    left 0
+    right 0
+    z-index 100
+    background $color-background
     .logoIcon
       margin 120px auto 50px
       text-align center
