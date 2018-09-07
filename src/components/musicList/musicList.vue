@@ -2,17 +2,17 @@
   <transition name="list">
     <div class="son-web">
       <div :class="fixed ? 'fixedHeader header' : 'header'">
-        <img :src="listData.coverImgUrl">
+        <img :src="listData !== null ? listData.coverImgUrl : ''">
         <i class="icon-you" @click="ToLast"></i>
         {{ title }}
       </div>
       <Scroll :data="listData" v-if="listData!== null"  class="list-bigBox" @scroll="scroll" :scrollTop="scrollTop" :probe-type="probeType" :listen-scroll="listenScroll">
         <div>
           <div class="List-top">
-            <img :src="listData.coverImgUrl">
+            <img :src="listData !== null ? listData.coverImgUrl : ''">
             <div class="List-data">
               <div class="data-left">
-                <img :src="listData.coverImgUrl">
+                <img :src="listData !== null ? listData.coverImgUrl : ''">
                 <div class="data-left-rightData">
                   <i class="icon-erji"></i>
                   {{ _getNumber(listData.playCount) }}
@@ -61,12 +61,12 @@
             </div>
           </div>
           <div class="List-bottom">
-            <div class="List-items" v-for="(item,index) in listData.tracks" :key="item.id">
+            <div class="List-items" v-for="(item,index) in listData.tracks" :key="item.id" @click="toPlayer(item.id)">
               <div class="items-left">
                 {{ index+1 }}
               </div>
               <div class="items-right">
-                <p>{{ item.al.name }}</p>
+                <p>{{ item.name }}</p>
                 <p>{{ item.ar[0].name }}</p>
               </div>
             </div>
@@ -95,7 +95,7 @@
 
 <script>
 import {Music_GetListData} from 'api/music'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapMutations} from 'vuex'
 import {CODE} from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import download from 'base/download/download'
@@ -127,6 +127,10 @@ export default {
       this.scrollY = pos.y
       // console.log(this.scrollY)
     },
+    toPlayer(id){
+      this.setPlayId(id)
+      this.setfullScreen(true)
+    },
     _getNumber(number) {
       return setListenNum(number)
     },
@@ -138,18 +142,27 @@ export default {
         this.$router.push('/index')
         return
       }
+      this.listData = null
       Music_GetListData(this.listId).then(res => {
         if (res.data.code === CODE) {
           this.listData = res.data.playlist
         }
       })
-    }
+    },
+    ...mapMutations({
+      setPlayId:'SET_PLAY_ID',
+      setfullScreen:'SET_FULLSCREEN'
+    })
   },
   components: {
     Scroll,
     download
   },
   watch: {
+    listId(newID){
+      console.log(newID)
+      this._getList()
+    },
     scrollY(newY){
       const scrollY = Math.abs(newY)
       const authorHeight = this.$refs.author.offsetTop
@@ -165,15 +178,14 @@ export default {
       }else {
         this.fixed = false
       }
-    },
-    '$route' (to, from) {
-      //  由于用了vue-router导致created只执行第一次 所以只能监控router进行刷新数据
-      if (to.path === '/musicList') {
-        this.listData = null
-        this.scrollTop = true
-        this._getList()
-      }
     }
+    // '$route' (to, from) {
+    //   //  由于用了vue-router导致created只执行第一次 所以只能监控router进行刷新数据
+    //   if (to.path === '/musicList' && from.path !== '/player') {
+    //     this.scrollTop = true
+    //     this._getList()
+    //   }
+    // }
   }
 }
 </script>
@@ -194,7 +206,6 @@ export default {
     width 100%
     z-index 5
     position relative
-    top -25px
     background $color-background
     border-top-left-radius 0px
     border-top-right-radius 0px
@@ -251,10 +262,10 @@ export default {
       z-index 50
       overflow hidden
       img
-        width 110%
+        width 120%
         min-height 100%
         position absolute
-        left -5%
+        left -10%
         top 0
         z-index -1
         filter: blur(6vw)
@@ -269,16 +280,16 @@ export default {
     height 100%
     overflow hidden 
   .List-top
-    height 42vh
+    height 74vw
     position relative
     overflow hidden
     padding 0 30px
     box-sizing border-box
     &>img
       position absolute 
-      width 110%
+      width 120%
       min-height 100%
-      left -5%
+      left -10%
       z-index -1
       filter: blur(6vw)
     .List-data
@@ -300,8 +311,9 @@ export default {
           right 20px
           top 10px
           color #fff
+          font-size $font-size-small
         i
-          font-size 26px
+          font-size 22px
       .data-right
         color #fff
         margin-left 20px
@@ -359,7 +371,7 @@ export default {
         text-align left 
         font-size $font-size-large-x
         width 62vw
-        border-bottom 1px solid #e2e3e4
+        border-bottom 1px solid #e2e3e4!important
       &:last-child
         color #fff
         background $color-highlight-background
@@ -386,6 +398,8 @@ export default {
       top 13px
 
   .List-bottom
+    position relative
+    top -25px
     .List-items
       height 110px
       line-height 110px
@@ -401,13 +415,14 @@ export default {
         text-align left
         border-bottom 1px solid #e2e3e4
         line-height 0
+        width 100%
         &>p:first-child
           font-size $font-size-big-x
-          margin-top 25px
+          margin-top 40px
         &>p:last-child
           font-size $font-size-medium-x
           color #7d7e7f
-          margin-top 50px
+          margin-top 45px
 
 
 </style>

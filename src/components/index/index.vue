@@ -162,7 +162,7 @@ export default {
   .index
     width 100%
     position fixed!important
-    top 154px!important
+    top 152px!important
     bottom 0
   .recommend-content
     height 100%

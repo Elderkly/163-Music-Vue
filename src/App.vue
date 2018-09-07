@@ -11,15 +11,13 @@
     <keep-alive>
       <router-view style="position:relative;top:-1px" />
     </keep-alive>
-    
+    <player></player>
   </div>
 </template>
 
 <script>
 import tab from 'cpnts/tab/tab'
-import index from 'cpnts/index/index'
-import myMusic from 'cpnts/my-music/my-music'
-import user from 'cpnts/user/user'
+import player from 'cpnts/player/player'
 
 // import {mapGetters,mapMutations} from 'vuex'
 import {getCookie} from 'common/js/cookie'
@@ -38,9 +36,7 @@ export default {
   },
   components:{
     tab,
-    index,
-    myMusic,
-    user
+    player
   }
 }
 </script>

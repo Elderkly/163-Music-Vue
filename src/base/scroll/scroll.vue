@@ -80,12 +80,13 @@ export default {
     data(){
       setTimeout(() => {
         this.refresh()
+        this.scroll.scrollTo(0,0,30)
       },20)
     },
     scrollTop() {
-      if (scrollTop) {
-        this.scroll.scrollTo(0,0,400)
-      }
+      // if (this.scrollTop) {
+        // this.scroll.scrollTo(0,0,400)
+      // }
     }
   }
 }

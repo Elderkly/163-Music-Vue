@@ -12,6 +12,12 @@ const mutations = {
     },
     [types.SET_LIST_ID](state,id) {
       state.listId = id
+    },
+    [types.SET_PLAY_ID](state,id) {
+      state.playId = id
+    },
+    [types.SET_FULLSCREEN](state,fullScreen) {
+      state.fullScreen = fullScreen
     }
 }
 
