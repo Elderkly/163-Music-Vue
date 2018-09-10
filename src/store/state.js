@@ -6,8 +6,14 @@ const state = {
     login:false,     //登录状态
     listId:null,  // 歌单ID
     playId:null, //  播放歌曲ID
-    playing:false, //  是否正在播放
-    fullScreen:false // 是否张开播放页
+    playIng:false, //  是否正在播放
+    playType:'list', // 播放模式
+    fullScreen:false, // 是否张开播放页
+    // playItem:{},  //  当前播放信息
+    playList:[],  //  播放列表
+    sequenceList:[], //  根据播放模式重新计算的播m列表
+    playIndex:-1  // 播放索引
+
 }
 
 

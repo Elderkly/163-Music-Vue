@@ -18,7 +18,23 @@ const mutations = {
     },
     [types.SET_FULLSCREEN](state,fullScreen) {
       state.fullScreen = fullScreen
-    }
+    },
+    [types.SET_PLAY_ING](state,playing) {
+      state.playIng = playing
+    },
+    [types.SET_PLAY_TYPE](state,type) {
+      state.playType = type
+    },
+    [types.SET_PLAY_LIST](state,list) {
+      state.playList = list
+    },
+    [types.SET_PLAY_INDEX](state,index) {
+      state.playIndex = index
+    },
+    [types.SET_SEQUENCE_LIST](state,list) {
+      state.sequenceList = list
+    },
+
 }
 
 export default mutations

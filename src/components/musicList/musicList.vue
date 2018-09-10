@@ -3,6 +3,7 @@
     <div class="son-web">
       <div :class="fixed ? 'fixedHeader header' : 'header'">
         <img :src="listData !== null ? listData.coverImgUrl : ''">
+        <div class="background header-background"></div>
         <i class="icon-you" @click="ToLast"></i>
         {{ title }}
       </div>
@@ -10,6 +11,7 @@
         <div>
           <div class="List-top">
             <img :src="listData !== null ? listData.coverImgUrl : ''">
+            <div class="background list-background"></div>
             <div class="List-data">
               <div class="data-left">
                 <img :src="listData !== null ? listData.coverImgUrl : ''">
@@ -61,12 +63,15 @@
             </div>
           </div>
           <div class="List-bottom">
-            <div class="List-items" v-for="(item,index) in listData.tracks" :key="item.id" @click="toPlayer(item.id)">
-              <div class="items-left">
+            <div class="List-items" v-for="(item,index) in listData.tracks" :key="item.id" @click="toPlayer(index)">
+              <div :class="index > 98 ? 'items-left items-left-100' : 'items-left'" v-if="playItem.id !== item.id">
                 {{ index+1 }}
               </div>
+              <div class="items-left playing" v-else>
+                <i class="icon-laba"></i>
+              </div>
               <div class="items-right">
-                <p>{{ item.name }}</p>
+                <p :class="playItem.id === item.id ? 'playing' : ''">{{ item.name }}</p>
                 <p>{{ item.ar[0].name }}</p>
               </div>
             </div>
@@ -95,7 +100,7 @@
 
 <script>
 import {Music_GetListData} from 'api/music'
-import {mapGetters,mapMutations} from 'vuex'
+import {mapGetters,mapMutations,mapActions} from 'vuex'
 import {CODE} from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import download from 'base/download/download'
@@ -104,7 +109,8 @@ import {setListenNum} from 'common/js/number.js'
 export default {
   computed: {
     ...mapGetters([
-      'listId'
+      'listId',
+      'playItem'
     ])
   },
   data() {
@@ -127,9 +133,14 @@ export default {
       this.scrollY = pos.y
       // console.log(this.scrollY)
     },
-    toPlayer(id){
-      this.setPlayId(id)
-      this.setfullScreen(true)
+    toPlayer(index){
+      // this.setPlayId(id)
+      // this.setfullScreen(true) 
+      // console.log(index,this.playList)
+      this.selectPlay({
+        list:this.playList,
+        index:index
+      })
     },
     _getNumber(number) {
       return setListenNum(number)
@@ -146,12 +157,28 @@ export default {
       Music_GetListData(this.listId).then(res => {
         if (res.data.code === CODE) {
           this.listData = res.data.playlist
+          this._musicList(res.data.playlist.tracks)
         }
       })
     },
+    _musicList(list){
+      let _list = []
+      for (let x in list) {
+        const obj = {}
+        obj.id = list[x].id
+        obj.name = list[x].name
+        obj.author = list[x].ar[0].name
+        _list.push(obj)
+      }
+      // console.log(_list)
+      // this.setPlayList(_list)
+      this.playList = _list
+    },
+    ...mapActions([
+      'selectPlay'
+    ]),
     ...mapMutations({
-      setPlayId:'SET_PLAY_ID',
-      setfullScreen:'SET_FULLSCREEN'
+      // setPlayList:'SET_PLAY_LIST'
     })
   },
   components: {
@@ -160,7 +187,7 @@ export default {
   },
   watch: {
     listId(newID){
-      console.log(newID)
+      // console.log(newID)
       this._getList()
     },
     scrollY(newY){
@@ -173,7 +200,7 @@ export default {
         this.title = '歌单'
       }
 
-      if (scrollY > middleHeight){
+      if (-newY > middleHeight){
         this.fixed = true
       }else {
         this.fixed = false
@@ -196,6 +223,14 @@ export default {
     transition all .3s
   .list-enter,.list-leave-to
     transform translateX(100%)
+  .background
+    position fixed
+    width 100%
+    height 100%
+    left 0
+    top 0
+    z-index -2
+    background rgba(0,0,0,.2)
   .fixed-middle
     display flex
     justify-content flex-start
@@ -267,7 +302,7 @@ export default {
         position absolute
         left -10%
         top 0
-        z-index -1
+        z-index -2
         filter: blur(6vw)
         transition all .3s
       &>i 
@@ -290,7 +325,7 @@ export default {
       width 120%
       min-height 100%
       left -10%
-      z-index -1
+      z-index -2
       filter: blur(6vw)
     .List-data
       display flex
@@ -407,10 +442,12 @@ export default {
       align-items stretch
       justify-content flex-start
       .items-left
-        margin 0 35px
         text-align center
+        width 14.2vw
         font-size $font-size-big-x
         color #7d7e7f
+      .items-left-100
+        font-size $font-size-large
       .items-right
         text-align left
         border-bottom 1px solid #e2e3e4
@@ -423,6 +460,14 @@ export default {
           font-size $font-size-medium-x
           color #7d7e7f
           margin-top 45px
-
+  .header-background
+    height 80px
+  .list-background
+    height 74vw
+  .playing
+    color $color-highlight-background
+    i 
+      font-size 40px
+      color $color-highlight-background
 
 </style>
