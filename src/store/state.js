@@ -11,7 +11,7 @@ const state = {
     fullScreen:false, // 是否张开播放页
     // playItem:{},  //  当前播放信息
     playList:[],  //  播放列表
-    sequenceList:[], //  根据播放模式重新计算的播m列表
+    sequenceList:[], //  用于存储原playList
     playIndex:-1  // 播放索引
 
 }

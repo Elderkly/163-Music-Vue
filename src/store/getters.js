@@ -16,6 +16,8 @@ export const playList  = state => state.playList
 
 export const playIndex = state => state.playIndex
 
+export const sequenceList = state => state.sequenceList
+
 export const playItem  = (state) => {
   return state.playList[state.playIndex] || {}
 }

@@ -8,7 +8,7 @@ const mutations = {
         state.user = obj
     },
     [types.SET_USER_ID](state,id) {
-      state.user.id = id
+      state.user.userId = id
     },
     [types.SET_LIST_ID](state,id) {
       state.listId = id

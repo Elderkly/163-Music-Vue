@@ -23,7 +23,7 @@
               <div class="data-right">
                 <p>{{ listData.name }}</p>
                 <div ref='author'>
-                  <img :src="listData.creator.backgroundUrl">
+                  <img :src="listData.creator.avatarUrl">
                   {{ listData.creator.nickname }}
                   <i class="icon-you"></i>
                 </div>
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div class="List-middle" ref="middle">
+          <div class="List-middle" ref="middle" @click="_randomPlay">
             <div>
               <img src="../../common/img/play.png">
             </div>
@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-          <div class="List-bottom">
+          <div class="List-bottom" :style="!fullScreen ? 'padding-bottom:16vw' : ''">
             <div class="List-items" v-for="(item,index) in listData.tracks" :key="item.id" @click="toPlayer(index)">
               <div :class="index > 98 ? 'items-left items-left-100' : 'items-left'" v-if="playItem.id !== item.id">
                 {{ index+1 }}
@@ -80,7 +80,7 @@
       </Scroll>
       <download v-else></download>
 
-      <div class="fixed-middle" v-if="fixed">
+      <div class="fixed-middle" v-if="fixed && playList.length > 5"  @click="_randomPlay">
         <div>
           <img src="../../common/img/play.png">
         </div>
@@ -110,7 +110,8 @@ export default {
   computed: {
     ...mapGetters([
       'listId',
-      'playItem'
+      'playItem',
+      'fullScreen'
     ])
   },
   data() {
@@ -129,14 +130,16 @@ export default {
     this._getList()
   },
   methods: {
+    _randomPlay() {
+      this.randomPlay({
+        list:this.playList
+      })
+    },
     scroll(pos){
       this.scrollY = pos.y
       // console.log(this.scrollY)
     },
     toPlayer(index){
-      // this.setPlayId(id)
-      // this.setfullScreen(true) 
-      // console.log(index,this.playList)
       this.selectPlay({
         list:this.playList,
         index:index
@@ -175,7 +178,8 @@ export default {
       this.playList = _list
     },
     ...mapActions([
-      'selectPlay'
+      'selectPlay',
+      'randomPlay'
     ]),
     ...mapMutations({
       // setPlayList:'SET_PLAY_LIST'
@@ -435,6 +439,7 @@ export default {
   .List-bottom
     position relative
     top -25px
+    padding-bottom 120px
     .List-items
       height 110px
       line-height 110px
@@ -460,6 +465,9 @@ export default {
           font-size $font-size-medium-x
           color #7d7e7f
           margin-top 45px
+      &:last-child
+        .items-right
+          border none
   .header-background
     height 80px
   .list-background

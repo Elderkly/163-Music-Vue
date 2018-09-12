@@ -9,7 +9,7 @@
         <user></user> -->
       <!-- </keep-alive> -->
     <keep-alive>
-      <router-view style="position:relative;top:-1px" />
+      <router-view/>
     </keep-alive>
     <player></player>
   </div>

@@ -18,11 +18,20 @@
 
 <script>
 export default {
-    methods:{
-      bindtab(num) {
-        this.$refs.link.style.left = `${13.5 + num * 33.35}%`
-      }
+  mounted(){
+    let num = this.$router.currentRoute.path === '/index' ? 0 : (this.$router.currentRoute.path === '/my-music' ? 1 : 2)
+    this.bindtab(num)
+  },
+  methods:{
+    bindtab(num) {
+      this.$refs.link.style.left = `${13.5 + num * 33.35}%`
     }
+  },
+  watch:{
+    $route(to, from) {
+      if (from.path === '/login') this.bindtab(0)
+    }
+  }
 }
 </script>
 

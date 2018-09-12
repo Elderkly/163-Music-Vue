@@ -30,7 +30,7 @@
 <script>
 import {login} from 'api/login'
 import {setCookie} from 'common/js/cookie'
-import {mapMutations} from 'vuex'
+import {mapMutations,mapGetters} from 'vuex'
 import loading from 'base/loading/loading'
 
 export default {
@@ -45,7 +45,10 @@ export default {
   computed:{
     loginClass(){
       return this.tel !== null && this.password !== null ? 'button' : 'button falseLogin'
-    }
+    },
+    ...mapGetters([
+      'userId'
+    ])
   },
   components: {
     loading
@@ -72,11 +75,10 @@ export default {
       if (this.tel !== null && this.password !== null) {
         this.loginSwitch = true
         login(this.tel,this.password).then(res => {
-          // console.log(res)
           this.loginSwitch = false
           if (res.data.code === 200){
+            this.setUsreId(res.data.account.id)
             setCookie('userId',res.data.account.id,7)
-            // this.setLogin(true)
             this.$router.push('/index')
           }else if (res.data.code === 415) {
             alert('登录过于频繁 请稍候再试')
@@ -87,7 +89,7 @@ export default {
       }
     },
     ...mapMutations({
-      setLogin:'SET_LOGIN'
+      setUsreId:'SET_USER_ID'
     })
   }
 }

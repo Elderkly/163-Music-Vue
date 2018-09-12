@@ -16,3 +16,13 @@ export const Music_GetImg = id => {
   const url = HOST + `/song/detail?ids=${id}`
   return axios.get(url)
 }
+//  获取歌曲评论总数
+export const Music_Comment = id => {
+  /*
+    id:歌曲ID
+    limit：取出个数
+    offset：分页
+  */
+  const url = HOST + `/comment/music?id=${id}&limit=1`
+  return axios.get(url)
+}
