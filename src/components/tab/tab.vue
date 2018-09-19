@@ -43,6 +43,7 @@ export default {
     line-height: 70px
     font-size: $font-size-large
     background $color-highlight-background
+    z-index 2
     position relative
     top -1px
     .tab-item

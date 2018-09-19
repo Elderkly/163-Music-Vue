@@ -16,9 +16,9 @@ const mutations = {
     [types.SET_PLAY_ID](state,id) {
       state.playId = id
     },
-    [types.SET_FULLSCREEN](state,fullScreen) {
-      state.fullScreen = fullScreen
-    },
+    // [types.SET_FULLSCREEN](state,fullScreen) {
+    //   state.fullScreen = fullScreen
+    // },
     [types.SET_PLAY_ING](state,playing) {
       state.playIng = playing
     },
@@ -33,6 +33,21 @@ const mutations = {
     },
     [types.SET_SEQUENCE_LIST](state,list) {
       state.sequenceList = list
+    },
+    [types.SET_NOWSHOW](state,show) {
+      state.tab.NowShow = show
+    },
+    [types.SET_SHOWPLAYER](state,show) {
+      state.tab.showPlayer = show
+    },
+    [types.SET_SHOWPLAYLIST](state,show) {
+      state.tab.showPlayList = show
+    },
+    [types.SET_SHOWAUTHOR](state,show) {
+      state.tab.showAuthor = show
+    },
+    [types.SET_AUTHOR_ID](state,id) {
+      state.authorId = id
     },
 
 }

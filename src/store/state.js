@@ -9,10 +9,16 @@ const state = {
     playIng:false, //  是否正在播放
     playType:'list', // 播放模式
     fullScreen:false, // 是否张开播放页
-    // playItem:{},  //  当前播放信息
     playList:[],  //  播放列表
     sequenceList:[], //  用于存储原playList
-    playIndex:-1  // 播放索引
+    playIndex:-1,  // 播放索引
+    tab:{   //  用于全脚组件切换
+      NowShow:null,   //  当前显示的页面
+      showPlayer:false, //  是否显示播放器页
+      showPlayList:false,
+      showAuthor:false
+    },
+    authorId:null
 
 }
 

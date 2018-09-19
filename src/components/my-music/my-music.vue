@@ -1,6 +1,6 @@
 <template>
-    <div class="father-web">
-      <div style="height:100%;overflow:hidden;position: relative;">
+  <div class="father-web">
+    <div style="height:100%;overflow:hidden;position: relative;">
         <scroll class="scroll-box" :data="collectList" @scroll="_scroll" :listenScroll="listenScroll" :probeType="probeType">
         <div>
           <div class="top-list">
@@ -37,49 +37,22 @@
               </div>
             </div>
           </div>
-          <div class="creatorlist list">
-            <div class="header" ref="createorHeader">
-              <i class="icon-you"></i>
-              <span>我创建的歌单({{ creatorlist.length }})</span>
-            </div>
-            <div class="ul">
-              <div class="list-items" v-for="(item,index) in creatorlist" :key="item.id" @click="TomusicList(item.id)">
-                <div class="icon">
-                  <img v-lazy="item.coverImgUrl" >
-                </div>
-                <div class="text">
-                  <h2>{{ index === 0 ? '我喜欢的音乐' : item.name }}</h2>
-                  <p>{{ item.trackCount }}首</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="collectList list">
-            <div class="header" ref="collectHeader">
-              <i class="icon-you"></i>
-              <span>我收藏的歌单({{ collectList.length }})</span>
-            </div>
-            <div class="ul">
-              <div class="list-items" v-for="item in collectList" :key="item.id"  @click="TomusicList(item.id)">
-                <div class="icon">
-                  <img v-lazy="item.coverImgUrl" >
-                </div>
-                <div class="text">
-                  <h2>{{ item.name }}</h2>
-                  <p>{{ item.trackCount }}首</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <sonlist :creatorlist="creatorlist" 
+                   :collectList="collectList" 
+                   :pageY="pageY" 
+                   @setFixedTransFrom="setFixedTransFrom" 
+                   @setFixedText="setFixedText"
+                   @setfixedSwitch="setfixedSwitch"
+          ></sonlist>
         </div>
       </scroll>
-      <div class="fixed-header" v-show="fixedSwitch" ref="fixedDiv">
-        <i class="icon-you"></i>
-        <span ref="fixedText">我创建的歌单(4)</span>
+      <div class="fixed-header" v-if="fixedSwitch" ref="fixedDiv">
+        <!-- <i class="icon-you"></i> -->
+        <span ref="fixedText">歌单({{ creatorlist.length }})</span>
       </div>
-      </div>
-
     </div>
+
+  </div>
 </template>
 
 <script>
@@ -88,6 +61,7 @@ import {User_getUserList} from 'api/user'
 import {getCookie} from 'common/js/cookie'
 import scroll from 'base/scroll/scroll'
 import {mapGetters,mapMutations} from 'vuex'
+import sonlist from 'base/sonlist/sonlist'
 
 export default {
   data() {
@@ -120,11 +94,28 @@ export default {
       const _this = this
       this.creatorlist = []
       this.collectList = []
-      User_getUserList().then(res => {
+      User_getUserList(getCookie('userId')).then(res => {
         if (res.data.code === CODE){
           _this._disposeData(res.data.playlist)
         }
       })
+    },
+    setFixedTransFrom(num){
+      try {
+        this.$refs.fixedDiv.style.transform = `translate3d(0px, ${num}px, 0px)`
+      }catch(e) {
+        // console.log(this.$refs.fixedDiv)
+      }
+    },
+    setFixedText(text){
+      try{
+        this.$refs.fixedText.innerHTML = text
+      }catch(e) {
+        // console.log(this.$refs.fixedText)
+      }
+    },
+    setfixedSwitch(_switch){
+      this.fixedSwitch = _switch
     },
     _disposeData(list){
       this._userId = getCookie('userId')
@@ -135,43 +126,22 @@ export default {
         this.collectList.push(list[x])
       }
     },
-    TomusicList(id) {
-      this.setListId(id)
-      this.$router.push('/musicList')
-    },
+    // TomusicList(id) {
+    //   this.setListId(id)
+    //   this.$router.push('/musicList')
+    // },
     ...mapMutations({
       setListId:'SET_LIST_ID'
     })
   },
   components:{
-    scroll
+    scroll,
+    sonlist
   },
   watch:{
     userId(newId){
       // console.log(newId)
       this._getList()
-    },
-    pageY(newY){
-      const pageY = -newY
-      const createorHeader = this.$refs.createorHeader.offsetTop
-      const collectHeader = this.$refs.collectHeader.offsetTop
-      const collectClientHeight = collectHeader - this.$refs.collectHeader.clientHeight
-      const offsetY = newY + collectClientHeight > -this.$refs.collectHeader.clientHeight ? newY + collectClientHeight : 0
-      if (pageY > createorHeader) {
-        this.fixedSwitch = true
-        if (pageY > collectClientHeight) {
-          this.$refs.fixedDiv.style.transform = `translate3d(0px, ${offsetY}px, 0px)`
-          if (pageY > collectHeader){
-            this.$refs.fixedDiv.innerHTML = this.$refs.collectHeader.innerHTML
-          }else {
-            this.$refs.fixedDiv.innerHTML = this.$refs.createorHeader.innerHTML
-          }
-        }else {
-          this.$refs.fixedDiv.style.transform = `translate3d(0px, 0px, 0px)`
-        }
-      }else {
-        this.fixedSwitch = false
-      }
     }
   }
 }
@@ -212,53 +182,6 @@ export default {
           color #c2c2c2
           position relative
           top 2px
-  .list
-    .header
-      height 60px
-      background #eeeff0
-      padding-left 20px
-      line-height 60px
-      i 
-        font-size 25px
-        transform rotate(90deg)
-        float left
-        margin-right 20px
-      span 
-        font-size $font-size-medium-x
-        color #676768
-    .ul 
-      .list-items
-        height 115px
-        display flex
-        align-items stretch
-        padding 4px 0 4px 20px
-        box-sizing border-box
-        &:last-child
-          .text
-            border-bottom none
-      .icon
-        overflow hidden
-        border-radius 8px
-        flex: 0 0 108px;
-        width: 108px;
-        img 
-          width 100%
-          min-height 100%
-      .text
-        margin-left: 20px;
-        border-bottom 1px solid #e2e3e4
-        width 100%
-        display flex
-        line-height 38px
-        justify-content center
-        flex-direction column
-        h2
-          font-size $font-size-large-x
-        p
-          font-size $font-size-medium
-          color #999
-  .collectList
-    padding-bottom 120px
   .fixed-header
     height 60px
     background #eeeff0
@@ -267,7 +190,7 @@ export default {
     position absolute
     top 0 
     width 100%
-    i 
+    .icon-you 
       font-size 25px
       transform rotate(90deg)
       float left

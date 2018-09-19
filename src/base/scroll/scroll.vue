@@ -6,7 +6,7 @@
 
 <script>
 import BSroll from 'better-scroll'
-
+import Vue from 'vue'
 export default {
   props:{
     click: {  //  点击事件
@@ -50,7 +50,6 @@ export default {
         probeType: this.probeType,
         click: this.click
       })
-
       if (this.listenScroll){
         const _this = this
         this.scroll.on('scroll',pos => {
@@ -58,10 +57,10 @@ export default {
         })
       }
     },
-    enable(){
+    enable(){ //  启用better-scroll
         this.scroll && this.scroll.enable()
       },
-    disable(){
+    disable(){//  禁用better-scroll
       this.scroll && this.scroll.disable()
     },
     refresh(){
@@ -69,10 +68,10 @@ export default {
       //只有调用refresh才会滚动
       this.scroll && this.scroll.refresh()
     },
-    scrollTo() {
+    scrollTo() {  //  滚动到指定高度
       this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
     },
-    scrollToElement() {
+    scrollToElement() { //  滚动到指定元素
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     }
   },

@@ -16,7 +16,8 @@ export const selectPlay = function({commit,state},{list,index}) {
   }
   commit(types.SET_PLAY_INDEX,index)
   commit(types.SET_PLAY_ING,true)
-  commit(types.SET_FULLSCREEN,true)
+  commit(types.SET_SHOWPLAYER,true)
+  commit(types.SET_NOWSHOW,'player')
 }
 
 //  随机播放
@@ -26,6 +27,7 @@ export const randomPlay = function ({commit}, {list}) {
   let randomList = shuffle(list)
   commit(types.SET_PLAY_LIST, randomList)
   commit(types.SET_PLAY_INDEX, 0)
-  commit(types.SET_FULLSCREEN, true)
+  commit(types.SET_SHOWPLAYER,true)
+  commit(types.SET_NOWSHOW,'player')
   commit(types.SET_PLAY_ING, true)
 }

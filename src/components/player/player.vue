@@ -1,7 +1,7 @@
 <template>
-  <div class="player" v-show="playList.length > 0">
+  <div :class="NowShow === 'player' ? 'nowShow player' : 'player'" v-show="playList.length > 0">
     <transition name="player">
-      <div class="son-web" v-show="fullScreen">
+      <div class="son-web" v-show="showPlayer">
         <div class="bg" :style="'background:url('+bgImg+')'"></div>
         <div class="background"></div>
         <div class="header">
@@ -60,7 +60,7 @@
       </div>
     </transition>
     <transition name="mini">
-      <div class="min-player" v-show="!fullScreen && musicImg !== null" @click="showPlay">
+      <div class="min-player" v-show="!showPlayer && musicImg !== null" @click="showPlay">
         <div class="banner">
           <img :src="musicImg">
         </div>
@@ -136,7 +136,8 @@ export default {
       return this.playIng ? 'play-slow' : 'play-slow pause'
     },
     ...mapGetters([
-      'fullScreen',
+      'showPlayer',
+      'NowShow',
       'playIng',
       'playType',
       'playList',
@@ -147,7 +148,8 @@ export default {
   },
   methods: {
     showPlay(){
-      this.setFullScreen(true)
+      this.setPlayShow(true)
+      this.setNowShow('player')
     },
     ready(e) {
       this.audioReady = true
@@ -242,7 +244,11 @@ export default {
       this.setplayIng(!this.playIng)    
     },
     back() {
-      this.setFullScreen(false)
+      // this.setFullScreen(false)
+      this.setPlayShow(false)
+      setTimeout(() => {
+        this.setNowShow('playlist')
+      },300)
     },
     _getMusicSrc(id) {
       Music_GetSrc(id).then(res => {
@@ -286,11 +292,13 @@ export default {
       })
     },
     ...mapMutations({
-      setFullScreen:'SET_FULLSCREEN',
+      // setFullScreen:'SET_FULLSCREEN',
       setplayIng:'SET_PLAY_ING',
       setplayType:'SET_PLAY_TYPE',
       setplayIndex:'SET_PLAY_INDEX',
-      setplayList:'SET_PLAY_LIST'
+      setplayList:'SET_PLAY_LIST',
+      setNowShow:'SET_NOWSHOW',
+      setPlayShow:'SET_SHOWPLAYER'
     })
 
   },
@@ -370,11 +378,13 @@ export default {
         &.pause
           animation-play-state paused
         &:first-child
-          width 612px
-          height 612px
+          width 45.6vh
+          height 45.6vh
+          position relative
+          z-index 10
         &:nth-child(2)
-          width 612px
-          height 612px
+          width 45.6vh
+          height 45.6vh
           position absolute 
           top 0
           left 0
@@ -382,11 +392,11 @@ export default {
           margin auto
           transform rotate(90deg)
         &:last-child
-          width 395px
-          height 395px
+          width 28.6vh
+          height 28.6vh
           border-radius 50%
           position absolute 
-          top 110px
+          top 8.5vh
           left 0
           right 0
           margin auto
@@ -400,6 +410,7 @@ export default {
       margin auto
       height 293px
       width 193px
+      z-index 20
       transform: rotate(-24deg)
       transform-origin: -2vw 0vw
       transition all .6s
@@ -478,7 +489,7 @@ export default {
     height 120px
     display flex
     bottom 0px
-    z-index 300
+    z-index 9999
     left 0
     align-items saturate
     background $color-background

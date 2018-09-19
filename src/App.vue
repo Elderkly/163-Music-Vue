@@ -12,12 +12,16 @@
       <router-view/>
     </keep-alive>
     <player></player>
+    <author></author>
+    <musiclist></musiclist>
   </div>
 </template>
 
 <script>
 import tab from 'cpnts/tab/tab'
 import player from 'cpnts/player/player'
+import musiclist from 'cpnts/musicList/musicList'
+import author from 'cpnts/author/author'
 
 // import {mapGetters,mapMutations} from 'vuex'
 import {getCookie} from 'common/js/cookie'
@@ -36,7 +40,9 @@ export default {
   },
   components:{
     tab,
-    player
+    player,
+    musiclist,
+    author
   }
 }
 </script>
@@ -51,6 +57,8 @@ export default {
     background $color-highlight-background
     padding-top 12.5px
     box-sizing border-box
+    position relative
+    z-index 2
     &>div
       width 608px
       height 60px

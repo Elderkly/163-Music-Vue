@@ -53,7 +53,7 @@
               </div>
             </div>
           </div>
-          <div class="New-wrapper list-wrapper">
+          <div class="New-wrapper list-wrapper" style="padding-bottom: 16vw;">
             <div class="List-top">
               <span>最新音乐</span>
               <i class="icon-you"></i>
@@ -68,7 +68,7 @@
           </div>
         </div>
       </scroll>
-      <download v-else></download>
+      <download v-else-if="NewList.length < 1"></download>
       <router-view></router-view>
     </div>
 </template>
@@ -97,7 +97,9 @@ export default {
     methods:{
       TomusicList(id) {
         this.setListId(id)
-        this.$router.push('/musicList')
+        // this.$router.push('/musicList')
+        this.setNowShow('playlist')
+        this.setShowPlayList(true)
       },
       _getBanner() {
         Home_getBanner().then(res => {
@@ -144,7 +146,9 @@ export default {
         })
       },
       ...mapMutations({
-        setListId:'SET_LIST_ID'
+        setListId:'SET_LIST_ID',
+        setNowShow:'SET_NOWSHOW',
+        setShowPlayList:'SET_SHOWPLAYLIST'
       })
     },
     components: {
@@ -164,6 +168,7 @@ export default {
     position fixed!important
     top 152px!important
     bottom 0
+    background #fbfcfd
   .recommend-content
     height 100%
     overflow hidden

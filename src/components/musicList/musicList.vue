@@ -1,6 +1,6 @@
 <template>
   <transition name="list">
-    <div class="son-web">
+    <div :class="NowShow === 'playlist' ? 'nowShow son-web' : 'son-web playlist'" v-show="showPlayList">
       <div :class="fixed ? 'fixedHeader header' : 'header'">
         <img :src="listData !== null ? listData.coverImgUrl : ''">
         <div class="background header-background"></div>
@@ -22,7 +22,7 @@
               </div>
               <div class="data-right">
                 <p>{{ listData.name }}</p>
-                <div ref='author'>
+                <div ref='author' @click="toAuthor(listData.creator.userId)">
                   <img :src="listData.creator.avatarUrl">
                   {{ listData.creator.nickname }}
                   <i class="icon-you"></i>
@@ -72,7 +72,7 @@
               </div>
               <div class="items-right">
                 <p :class="playItem.id === item.id ? 'playing' : ''">{{ item.name }}</p>
-                <p>{{ item.ar[0].name }}</p>
+                <p >{{ item.ar[0].name }}</p>
               </div>
             </div>
           </div>
@@ -111,7 +111,9 @@ export default {
     ...mapGetters([
       'listId',
       'playItem',
-      'fullScreen'
+      'fullScreen',
+      'NowShow',
+      'showPlayList'
     ])
   },
   data() {
@@ -130,6 +132,15 @@ export default {
     this._getList()
   },
   methods: {
+    toAuthor(id){
+      // this.$router.push({path:'/author' + id})
+      this.setShowAuthor(false)
+      setTimeout(() => {
+        this.setAuthorId(id)
+        this.setShowAuthor(true)
+        this.setNowShow('author')
+      },300)
+    },
     _randomPlay() {
       this.randomPlay({
         list:this.playList
@@ -149,11 +160,14 @@ export default {
       return setListenNum(number)
     },
     ToLast() {
-      this.$router.back()
+      this.setNowShow('')
+      this.setShowPlayList(false)
     },
     _getList() {
       if (this.listId === null) {
-        this.$router.push('/index')
+        // this.$router.push('/index')
+        this.setNowShow('')
+        this.setShowPlayList(false)
         return
       }
       this.listData = null
@@ -182,7 +196,10 @@ export default {
       'randomPlay'
     ]),
     ...mapMutations({
-      // setPlayList:'SET_PLAY_LIST'
+      setNowShow:'SET_NOWSHOW',
+      setShowPlayList:'SET_SHOWPLAYLIST',
+      setShowAuthor:'SET_SHOWAUTHOR',
+      setAuthorId:'SET_AUTHOR_ID'
     })
   },
   components: {
@@ -457,14 +474,24 @@ export default {
         text-align left
         border-bottom 1px solid #e2e3e4
         line-height 0
-        width 100%
+        width 85%
+        p
+          display inline-block
+          overflow hidden
+          width 100%
+          text-overflow ellipsis
+          white-space nowrap
         &>p:first-child
           font-size $font-size-big-x
-          margin-top 40px
+          margin-top 10px
+          height 60px 
+          line-height 60px
         &>p:last-child
           font-size $font-size-medium-x
           color #7d7e7f
-          margin-top 45px
+          // margin-top 45px
+          height 30px 
+          line-height 30px
       &:last-child
         .items-right
           border none
