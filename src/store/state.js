@@ -18,7 +18,8 @@ const state = {
       showPlayList:false,
       showAuthor:false
     },
-    authorId:null
+    authorId:null,  //  作者页ID
+
 
 }
 

@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import {Music_GetListData} from 'api/music'
+import {Music_GetListData,Music_GetAlbumData} from 'api/music'
 import {mapGetters,mapMutations,mapActions} from 'vuex'
 import {CODE} from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
@@ -113,7 +113,8 @@ export default {
       'playItem',
       'fullScreen',
       'NowShow',
-      'showPlayList'
+      'showPlayList',
+      // 'showPlayListType'
     ])
   },
   data() {
@@ -128,7 +129,6 @@ export default {
   created() {
     this.probeType = 3
     this.listenScroll = true
-
     this._getList()
   },
   methods: {
@@ -164,6 +164,7 @@ export default {
       this.setShowPlayList(false)
     },
     _getList() {
+      // console.log(this.showPlayListType)
       if (this.listId === null) {
         // this.$router.push('/index')
         this.setNowShow('')
@@ -171,12 +172,22 @@ export default {
         return
       }
       this.listData = null
-      Music_GetListData(this.listId).then(res => {
-        if (res.data.code === CODE) {
-          this.listData = res.data.playlist
-          this._musicList(res.data.playlist.tracks)
-        }
-      })
+      // if (this.showPlayListType === 'sonlist') {
+        Music_GetListData(this.listId).then(res => {
+          if (res.data.code === CODE) {
+            this.listData = res.data.playlist
+            this._musicList(res.data.playlist.tracks)
+          }
+        })
+      // }else if (this.showPlayListType === 'album'){
+      //   Music_GetAlbumData(this.listId).then(res => {
+      //     if (res.data.code === CODE) {
+      //       this.listData = res.data.playlist
+      //       this._musicList(res.data.playlist.tracks)
+      //     }
+      //     console.log(res)
+      //   })
+      // }
     },
     _musicList(list){
       let _list = []

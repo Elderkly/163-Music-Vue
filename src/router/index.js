@@ -5,8 +5,9 @@ import index from 'cpnts/index/index'
 import myMusic from 'cpnts/my-music/my-music'
 import search from 'cpnts/search/search'
 import user from 'cpnts/user/user'
-import musicList from 'cpnts/musicList/musicList'
-import author from 'cpnts/author/author'
+import alllist from 'cpnts/allList/allList'
+// import musicList from 'cpnts/musicList/musicList'
+// import author from 'cpnts/author/author'
 import {getCookie} from 'common/js/cookie'
 
 Vue.use(Router)
@@ -25,10 +26,10 @@ const router = new Router({
       path: '/login',
       component: login
     },
-    {
-      path: '/musicList',
-      component: musicList
-    },
+    // {
+    //   path: '/musicList',
+    //   component: musicList
+    // },
     {
       path: '/my-music',
       component: myMusic
@@ -42,9 +43,13 @@ const router = new Router({
       component: user
     },
     {
-      path: '/author:id',
-      component: author
-    }
+      path: '/alllist',
+      component: alllist
+    },
+    // {
+    //   path: '/author:id',
+    //   component: author
+    // }
   ]
 })
 

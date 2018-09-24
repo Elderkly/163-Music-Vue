@@ -6,6 +6,11 @@ export const Music_GetListData = (id) => {
   const url = HOST + `/playlist/detail?id=${id}`
   return axios.get(url)
 }
+//  根据歌单ID获取专辑信息
+export const Music_GetAlbumData = (id) => {
+  const url = HOST + `/album?id=${id}`
+  return axios.get(url)
+}
 //  获取歌曲播放src
 export const Music_GetSrc = id => {
   const url = HOST + `/music/url?id=${id}`

@@ -1,6 +1,6 @@
 <template>
   <transition name="slideLeft">
-    <div :class="NowShow === 'author' ? 'nowShow son-web' : 'son-web author'"v-show="showAuthor" v-if="user.bgImg !== null">
+    <div :class="NowShow === 'author' ? 'nowShow son-web author' : 'son-web author'" v-show="showAuthor">
       <div class="header" ref="header">
         <div class="mask"></div>
         <img :src="user.bgImg" ref="headerBg">

@@ -19,11 +19,11 @@
             <div class="button">
               <div class="icon">
                 <i class="icon-tubiaozhizuomoban tuijian"></i>
-                <p>21</p>
+                <p>{{ _getDate }}</p>
               </div>
               <p>每日推荐</p>
             </div>
-            <div class="button">
+            <div class="button" @click="toAllList">
               <div class="icon">
                 <i class="icon-gedan"></i>
               </div>
@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="Recomlist-wrapper list-wrapper">
-            <div class="List-top">
+            <div class="List-top" @click="toAllList">
               <span>推荐歌单</span>
               <i class="icon-you"></i>
             </div>
@@ -59,7 +59,7 @@
               <i class="icon-you"></i>
             </div>
             <div class="List-bottom">
-              <div class="List-items" v-for="item in NewList" :key="item.id">
+              <div class="List-items" v-for="(item,index) in NewList" :key="item.id" @click="ToAlbum(index)">
                 <img v-lazy="item.picUrl">
                 <p class="text-overflow">{{ item.name }}</p>
                 <p class="text-overflow">{{ item.author }}</p>
@@ -81,7 +81,7 @@ import download from 'base/download/download'
 import {Home_getBanner,Home_getPersonalizedList,Home_getNewList} from 'api/index'
 import {CODE} from 'common/js/config'
 import {setListenNum} from 'common/js/number'
-import {mapMutations} from 'vuex'
+import {mapMutations,mapActions} from 'vuex'
 
 export default {
     data() {
@@ -96,10 +96,19 @@ export default {
     },
     methods:{
       TomusicList(id) {
+        // this.setListType('sonlist')
         this.setListId(id)
-        // this.$router.push('/musicList')
         this.setNowShow('playlist')
         this.setShowPlayList(true)
+      },
+      ToAlbum(index){
+        this.selectPlay({
+          list:this.NewList,
+          index:index
+        })
+      },
+      toAllList(){
+        this.$router.push('/alllist')
       },
       _getBanner() {
         Home_getBanner().then(res => {
@@ -148,8 +157,17 @@ export default {
       ...mapMutations({
         setListId:'SET_LIST_ID',
         setNowShow:'SET_NOWSHOW',
-        setShowPlayList:'SET_SHOWPLAYLIST'
-      })
+        setShowPlayList:'SET_SHOWPLAYLIST',
+        // setListType:'SET_LIST_TYPE'
+      }),
+      ...mapActions([
+        'selectPlay'
+      ])
+    },
+    computed:{
+      _getDate(){
+        return new Date().getDate()
+      }
     },
     components: {
       scroll,

@@ -49,6 +49,9 @@ const mutations = {
     [types.SET_AUTHOR_ID](state,id) {
       state.authorId = id
     },
+    [types.SET_LIST_TYPE](state,type) {
+      state.showPlayListType = type 
+    },
 
 }
 
