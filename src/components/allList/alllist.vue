@@ -102,10 +102,10 @@ export default {
       let scrollY = Math.min(0,newY)
       header.style.transform = `translateY(${scrollY}px)`
       if (newY > 0) {
-        header.style.height = `${this.headerHeight + newY}px`
+        // header.style.height = `${this.headerHeight + newY}px`
         header.style.transform += `scale(${1 + newY / headerHeight })`
       }else {
-        header.style.height = this.headerHeight + 'px'
+        // header.style.height = this.headerHeight + 'px'
         header.style.transform += `scale(1)`
       }
     }
@@ -143,12 +143,13 @@ export default {
   .icon-header
     margin-top 80px
     position relative
-    height 310px
+    min-height 310px
     overflow hidden
     display flex
     align-items stretch
     padding 60px 20px 30px
     box-sizing border-box
+    z-index 10
     &>img 
       width 150%
       min-height 150%

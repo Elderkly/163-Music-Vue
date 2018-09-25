@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="New-wrapper list-wrapper" style="padding-bottom: 16vw;">
-            <div class="List-top">
+            <div class="List-top" @click="toNewMusic">
               <span>最新音乐</span>
               <i class="icon-you"></i>
             </div>
@@ -109,6 +109,9 @@ export default {
       },
       toAllList(){
         this.$router.push('/alllist')
+      },
+      toNewMusic(){
+        this.$router.push('/newmusic')
       },
       _getBanner() {
         Home_getBanner().then(res => {

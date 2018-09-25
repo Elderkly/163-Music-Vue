@@ -142,8 +142,12 @@ export default {
       },300)
     },
     _randomPlay() {
-      this.randomPlay({
-        list:this.playList
+      // this.randomPlay({
+      //   list:this.playList
+      // })
+      this.selectPlay({
+        list:this.playList,
+        index:0
       })
     },
     scroll(pos){
@@ -204,7 +208,7 @@ export default {
     },
     ...mapActions([
       'selectPlay',
-      'randomPlay'
+      // 'randomPlay'
     ]),
     ...mapMutations({
       setNowShow:'SET_NOWSHOW',

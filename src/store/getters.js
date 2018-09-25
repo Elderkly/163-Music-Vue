@@ -26,6 +26,8 @@ export const showPlayList = state => state.tab.showPlayList
 
 export const showAuthor = state => state.tab.showAuthor
 
+export const sequenceList = state => state.sequenceList
+
 export const showPlayListType = state => state.showPlayListType
 
 export const playItem  = (state) => {

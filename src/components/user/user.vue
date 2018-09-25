@@ -182,8 +182,9 @@ export default {
   },
   methods:{
     toAuthor() {
-      this.$router.push({path:'/author' + this.userData.profile.userId})
-      // console.log(this.userData.profile.userId)
+      this.setAuthorId(this.userData.profile.userId)
+      this.setShowAuthor(true)
+      this.setNowShow('author')
     },
     logout() {
       setCookie('userId',null,-1)
@@ -192,7 +193,10 @@ export default {
       this.$router.push('/login')
     },
     ...mapMutations({
-      setLogin:'SET_LOGIN'
+      setLogin:'SET_LOGIN',
+      setShowAuthor:'SET_SHOWAUTHOR',
+      setAuthorId:'SET_AUTHOR_ID',
+       setNowShow:'SET_NOWSHOW'
     })
   },
   components:{
