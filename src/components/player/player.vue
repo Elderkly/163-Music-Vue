@@ -322,6 +322,13 @@ export default {
 
 <style lang="stylus" scoped>
   @import "~common/stylus/variable"
+  .player
+      // position: fixed !important;
+      // top: 0 !important;
+      // bottom: 0;
+      // left: 0;
+      // right: 0;
+      // z-index: 999;
   .bg
     position fixed
     width 120%

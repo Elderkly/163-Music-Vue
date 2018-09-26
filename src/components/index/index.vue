@@ -1,6 +1,6 @@
 <template>
     <div class="index">
-      <scroll ref="scroll" class="recommend-content" :data="NewList" v-if="NewList.length > 1">
+      <scroll ref="scroll" class="recommend-content" :data="biglist" v-if="NewList.length > 1">
         <div>
           <div class="banner-wrapper">
             <slider>
@@ -88,7 +88,8 @@ export default {
       return {
         bannerList:[],
         RecommendList: [],
-        NewList:[]
+        NewList:[],
+        biglist:[]
       }
     },
     created(){
@@ -134,6 +135,7 @@ export default {
               _Array.name = resData[x].name
               _Array.playCount = setListenNum(resData[x].playCount)
               Json.push(_Array)
+              this.biglist.push(_Array)
             }
             this.RecommendList = Json
           }
@@ -152,6 +154,7 @@ export default {
               _Array.name = resData[x].name
               _Array.author = resData[x].song.artists[0].name
               Json.push(_Array)
+              this.biglist.push(_Array)
             }
             this.NewList = Json
           }

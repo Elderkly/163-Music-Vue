@@ -266,6 +266,7 @@ export default {
 
   .List-bottom
     padding-bottom 120px
+    background #fff
     .List-items
       height 110px
       line-height 110px
@@ -330,6 +331,7 @@ export default {
     position fixed
     top 80px
     background #fff
+    width 100%
     &>div
       text-align center
       line-height 100px

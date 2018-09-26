@@ -103,7 +103,7 @@ export default {
     bottom 0
     left 0
     right 0
-    z-index 100
+    z-index 999999
     background $color-background
     .logoIcon
       margin 120px auto 50px

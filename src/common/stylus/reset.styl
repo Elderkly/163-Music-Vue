@@ -64,3 +64,21 @@ input,button
   outline: none;
   border: none;
   background: transparent;
+
+input[type=search]::-webkit-search-cancel-button{
+    -webkit-appearance: none;
+    position: relative;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    // background-color: #666;
+}
+
+input[type=search]::-webkit-search-cancel-button:after{
+    position: absolute;
+    content: 'x';
+    left: 25%;
+    top: -12%;
+    font-size:40px;
+    color: #fff;
+}
