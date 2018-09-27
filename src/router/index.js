@@ -7,6 +7,7 @@ import search from 'cpnts/search/search'
 import user from 'cpnts/user/user'
 import alllist from 'cpnts/allList/allList'
 import newmusic from 'cpnts/newmusic/newmusic'
+import ranking from 'cpnts/ranking/ranking'
 import {getCookie} from 'common/js/cookie'
 
 Vue.use(Router)
@@ -49,6 +50,10 @@ const router = new Router({
       path: '/newmusic',
       component: newmusic
     },
+    {
+      path: '/ranking',
+      component: ranking
+    }
   ]
 })
 

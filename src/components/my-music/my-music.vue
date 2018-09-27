@@ -142,6 +142,9 @@ export default {
     userId(newId){
       // console.log(newId)
       this._getList()
+    },
+    '$route'(to){
+      to.path == '/my-music' ? (this._getList(),this.fixedSwitch = false) : ''
     }
   }
 }

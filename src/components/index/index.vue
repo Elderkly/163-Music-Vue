@@ -29,7 +29,7 @@
               </div>
               <p>歌单</p>
             </div>
-            <div class="button">
+            <div class="button" @click="toRanKing">
               <div class="icon">
                 <i class="icon-paixingbang"></i>
               </div>
@@ -101,6 +101,7 @@ export default {
         this.setListId(id)
         this.setNowShow('playlist')
         this.setShowPlayList(true)
+        this.setListType('list')
       },
       ToAlbum(index){
         this.selectPlay({
@@ -113,6 +114,9 @@ export default {
       },
       toNewMusic(){
         this.$router.push('/newmusic')
+      },
+      toRanKing(){
+        this.$router.push('/ranking')
       },
       _getBanner() {
         Home_getBanner().then(res => {
@@ -164,6 +168,7 @@ export default {
         setListId:'SET_LIST_ID',
         setNowShow:'SET_NOWSHOW',
         setShowPlayList:'SET_SHOWPLAYLIST',
+        setListType:'SET_LIST_TYPE'
         // setListType:'SET_LIST_TYPE'
       }),
       ...mapActions([

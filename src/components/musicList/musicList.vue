@@ -24,7 +24,7 @@
                 <p>{{ listData.name }}</p>
                 <div ref='author' @click="toAuthor(listData.creator.userId)">
                   <img :src="listData.creator.avatarUrl">
-                  {{ listData.creator.nickname }}
+                  <span class="text-overflow">{{ listData.creator.nickname }}</span>
                   <i class="icon-you"></i>
                 </div>
               </div>
@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import {Music_GetListData,Music_GetAlbumData} from 'api/music'
+import {Music_GetListData,Music_getRanking} from 'api/music'
 import {mapGetters,mapMutations,mapActions} from 'vuex'
 import {CODE} from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
@@ -114,7 +114,7 @@ export default {
       'fullScreen',
       'NowShow',
       'showPlayList',
-      // 'showPlayListType'
+      'showPlayListType'
     ])
   },
   data() {
@@ -176,22 +176,24 @@ export default {
         return
       }
       this.listData = null
-      // if (this.showPlayListType === 'sonlist') {
+      if (this.showPlayListType === 'list') {
+        this.title = '歌单'
         Music_GetListData(this.listId).then(res => {
           if (res.data.code === CODE) {
             this.listData = res.data.playlist
             this._musicList(res.data.playlist.tracks)
           }
         })
-      // }else if (this.showPlayListType === 'album'){
-      //   Music_GetAlbumData(this.listId).then(res => {
-      //     if (res.data.code === CODE) {
-      //       this.listData = res.data.playlist
-      //       this._musicList(res.data.playlist.tracks)
-      //     }
-      //     console.log(res)
-      //   })
-      // }
+      }else if (this.showPlayListType === 'ranking') {
+        this.title = '排行榜'
+        Music_getRanking(this.listId).then(res => {
+          if (res.data.code === CODE) {
+            this.listData = res.data.playlist
+            this._musicList(res.data.playlist.tracks)
+          }
+        })
+      }
+        
     },
     _musicList(list){
       let _list = []
@@ -396,6 +398,9 @@ export default {
           margin-top 40px
           font-size $font-size-medium
           color #cecdda
+          span
+            display inline-block
+            max-width 200px
           &>img 
             width 60px
             height 60px

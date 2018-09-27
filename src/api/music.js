@@ -31,3 +31,9 @@ export const Music_Comment = id => {
   const url = HOST + `/comment/music?id=${id}&limit=1`
   return axios.get(url)
 }
+
+//  获取排行榜歌单
+export const Music_getRanking = num => {
+  const url = HOST + `/top/list?idx=${num}`
+  return axios.get(url)
+}

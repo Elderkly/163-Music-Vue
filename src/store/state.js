@@ -19,8 +19,7 @@ const state = {
       showAuthor:false
     },
     authorId:null,  //  作者页ID
-
-
+    showPlayListType:''  //作者页类型
 }
 
 
