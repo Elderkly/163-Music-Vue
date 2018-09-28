@@ -35,7 +35,7 @@
         <div>{{ item.name }}</div>
       </div>
     </div>
-    <scroll :data="search" class="scroll" v-show="search.length > 0">
+    <scroll :data="search" class="scroll" v-if="search.length > 0">
       <div class="search-data" v-show="search.length > 0">
         <div :class="playItem.id === item.id ? 'search-data-items playing' : 'search-data-items'" v-for="(item,index) in search" :key="item.id" @click="toPlay(index)">
           <h2>{{ item.name }}</h2>
@@ -43,12 +43,14 @@
         </div>
       </div>
     </scroll>
+    <minloading v-if="loading"></minloading>
   </div>
 </template>
 
 <script>
 import scroll from 'base/scroll/scroll'
 import {CODE} from 'common/js/config'
+import minloading from 'base/163loading/163loading'
 import {mapActions,mapGetters} from 'vuex'
 import {setCookie,getCookie} from 'common/js/cookie'
 import {Search_getHot,Search_suggest,Search_search} from 'api/search'
@@ -62,7 +64,8 @@ export default {
       suggest:[],
       search:[],
       forSwitch:true,
-      selectList:[]
+      selectList:[],
+      loading:false
     }
   },
   computed:{
@@ -100,16 +103,21 @@ export default {
       this.getSearchData(e)
     },
     getSearchData(value){
+      this.loading = true
       if (this.findIndex(value) === 1) {
         this.selectList.push(value)
         setCookie('selectList',this.selectList)
       }
       Search_search(value).then(res => {
         this.suggest = []
+        setTimeout(() => {
+          this.loading = false
+        },300) 
         if (res.data.code === CODE) {
           this._setsearchData(res.data.result.songs)
         }
       })
+      
     },
     //  判断搜索结果是否已存在
     findIndex(value){
@@ -181,7 +189,8 @@ export default {
     }
   },
   components:{
-    scroll
+    scroll,
+    minloading
   }
 }
 </script>

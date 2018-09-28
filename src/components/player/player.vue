@@ -1,7 +1,6 @@
 <template>
-  <div :class="NowShow === 'player' ? 'nowShow player' : 'player'" v-show="playList.length > 0">
     <transition name="player">
-      <div class="son-web" v-show="showPlayer">
+      <div class="son-web" v-show="showPlayer && playList.length > 0" :class="NowShow === 'player' ? 'nowShow player' : 'player'" >
         <div class="bg" :style="'background:url('+bgImg+')'"></div>
         <div class="background"></div>
         <div class="header">
@@ -59,28 +58,10 @@
         ></audio>
       </div>
     </transition>
-    <transition name="mini">
-      <div class="min-player" v-show="!showPlayer && musicImg !== null" @click="showPlay">
-        <div class="banner">
-          <img :src="musicImg">
-        </div>
-        <div class="text">
-          <h2 class="text-overflow">{{ playItem.name }}</h2>
-          <p class="text-overflow">{{ playItem.author }}</p>
-        </div>
-        <div class="control">
-          <i :class="buttonClass" @click.stop="play"></i>
-        </div>
-        <div class="min-list">
-          <i class="icon-gedan"></i>
-        </div>
-      </div>
-    </transition>
-  </div>
-  
 </template>
 
 <script>
+import bus from 'common/vue/bus'
 import {mapGetters,mapMutations} from 'vuex'
 import {shuffle} from 'common/js/util'
 import {Music_GetSrc,Music_GetImg,Music_Comment} from 'api/music'
@@ -106,6 +87,10 @@ export default {
     // document.querySelector('html').addEventListener('touchstart',function(){
     //   _this.$refs.audio.play()
     // })
+    const _this = this
+    bus.$on('setplaying',function(){
+      _this.play()
+    })
   },
   computed: {
     turnClass(){
@@ -277,6 +262,8 @@ export default {
       Music_GetImg(id).then(res => {
         if (res.data.code === CODE) {
           this.musicImg = res.data.songs[0].al.picUrl
+          //  向中央组件发送歌曲图片信息
+          bus.$emit('passImg',this.musicImg)
           setTimeout(() => {
             this.bgImg = this.musicImg
           },900)

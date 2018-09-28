@@ -14,6 +14,7 @@
     <player></player>
     <author></author>
     <musiclist></musiclist>
+    <miniplayer></miniplayer>
   </div>
 </template>
 
@@ -23,7 +24,7 @@ import tab from 'cpnts/tab/tab'
 import player from 'cpnts/player/player'
 import musiclist from 'cpnts/musicList/musicList'
 import author from 'cpnts/author/author'
-
+import miniplayer from 'cpnts/miniplayer/miniplayer'
 // import {mapGetters,mapMutations} from 'vuex'
 import {getCookie} from 'common/js/cookie'
 
@@ -44,7 +45,8 @@ export default {
     player,
     musiclist,
     author,
-    mheader
+    mheader,
+    miniplayer
   }
 }
 </script>

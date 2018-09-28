@@ -1,15 +1,15 @@
 <template>
   <transition name="list">
     <div :class="NowShow === 'playlist' ? 'nowShow son-web' : 'son-web playlist'" v-show="showPlayList">
-      <div :class="fixed ? 'fixedHeader header' : 'header'">
-        <img :src="listData !== null ? listData.coverImgUrl : ''">
+      <div class="header">
+        <img :src="listData !== null ? listData.coverImgUrl : ''" ref="headerImg">
         <div class="background header-background"></div>
         <i class="icon-you" @click="ToLast"></i>
         {{ title }}
       </div>
       <Scroll :data="listData" v-if="listData!== null"  class="list-bigBox" @scroll="scroll" :scrollTop="scrollTop" :probe-type="probeType" :listen-scroll="listenScroll">
         <div>
-          <div class="List-top">
+          <div class="List-top" ref="listTop">
             <img :src="listData !== null ? listData.coverImgUrl : ''">
             <div class="background list-background"></div>
             <div class="List-data">
@@ -225,13 +225,20 @@ export default {
   },
   watch: {
     listId(newID){
-      // console.log(newID)
+      this.$refs.headerImg.style.filter = `blur(6vw)`
+      this.$refs.headerImg.style.webkitFilter = `blur(6vw)`
       this._getList()
     },
     scrollY(newY){
       const scrollY = Math.abs(newY)
       const authorHeight = this.$refs.author.offsetTop
       const middleHeight = this.$refs.middle.offsetTop - this.$refs.middle.clientHeight + 10
+      const headerImg = this.$refs.headerImg
+      const num = 6 - - newY / middleHeight * 6
+      const blur = Math.max(0,Math.min(6,num))
+      // console.log(blur)
+      headerImg.style.filter = `blur(${blur}vw)`
+      headerImg.style.webkitFilter = `blur(${blur}vw)`
       if (scrollY > authorHeight) {
         this.title = this.listData.name
       }else {
@@ -342,7 +349,7 @@ export default {
         top 0
         z-index -2
         filter: blur(6vw)
-        transition all .3s
+        // transition all .3s
       &>i 
         float left 
         font-size 35px

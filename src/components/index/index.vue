@@ -1,6 +1,6 @@
 <template>
     <div class="index">
-      <scroll ref="scroll" class="recommend-content" :data="biglist" v-if="NewList.length > 1">
+      <scroll ref="scroll" class="recommend-content" :data="bannerList" v-if="NewList.length > 1">
         <div>
           <div class="banner-wrapper">
             <slider>
@@ -16,6 +16,12 @@
             <loading></loading>
           </div> -->
           <div class="button-wrapper">
+            <div class="button">
+              <div class="icon">
+                <i class="icon-shouyinjixian"></i>
+              </div>
+              <p>私人FM</p>
+            </div>
             <div class="button">
               <div class="icon">
                 <i class="icon-tubiaozhizuomoban tuijian"></i>
@@ -221,7 +227,7 @@ export default {
     align-items center
     padding 35px 0 35px
     .button
-      margin 0 50px
+      margin 0 40px
       .icon
         height 102px
         width 102px
@@ -245,7 +251,7 @@ export default {
           margin 0!important
       p
         color $color-h3
-        font-size $font-size-large
+        font-size $font-size-small
         text-align center
         margin-top 15px
   .loading
