@@ -8,8 +8,8 @@ import state from './state'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    actions,    //  set多个值
-    getters,    //  get
-    mutations,  //  set
-    state   //  data
+  actions, //  set多个值
+  getters, //  get
+  mutations, //  set
+  state //  data
 })

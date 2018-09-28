@@ -26,13 +26,13 @@ import musiclist from 'cpnts/musicList/musicList'
 import author from 'cpnts/author/author'
 import miniplayer from 'cpnts/miniplayer/miniplayer'
 // import {mapGetters,mapMutations} from 'vuex'
-import {getCookie} from 'common/js/cookie'
+import { getCookie } from 'common/js/cookie'
 
 export default {
-  computed:{
+  computed: {
 
   },
-  created(){
+  created() {
     if (getCookie('userId') === null) {
       this.$router.push('/login')
     }
@@ -40,7 +40,7 @@ export default {
   methods: {
 
   },
-  components:{
+  components: {
     tab,
     player,
     musiclist,

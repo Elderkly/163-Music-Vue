@@ -8,14 +8,14 @@ import user from 'cpnts/user/user'
 import alllist from 'cpnts/allList/allList'
 import newmusic from 'cpnts/newmusic/newmusic'
 import ranking from 'cpnts/ranking/ranking'
-import {getCookie} from 'common/js/cookie'
+import { getCookie } from 'common/js/cookie'
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [
     {
-      path:'/',
+      path: '/',
       redirect: '/index'
     },
     {
@@ -58,9 +58,9 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (getCookie('userId') === null && to.path.indexOf('login') == -1){
+  if (getCookie('userId') === undefined && to.path.indexOf('login') === -1) {
     return next('/login')
-  }else {
+  } else {
     return next()
   }
 })

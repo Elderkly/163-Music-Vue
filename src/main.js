@@ -6,11 +6,11 @@ import router from './router'
 import store from './store'
 import VueLazyload from 'vue-lazyload'
 //  stylus
-import  'common/stylus/index.styl'
+import 'common/stylus/index.styl'
 
 Vue.config.productionTip = false
 
-Vue.use(VueLazyload,{
+Vue.use(VueLazyload, {
   loading: require('common/img/loading.png')
 })
 /* eslint-disable no-new */

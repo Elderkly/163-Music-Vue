@@ -1,8 +1,8 @@
 const setListenNum = (number) => {
-  let num 
+  let num
   if (number > 100000) {
     num = parseInt(number / 10000)
-  }else {
+  } else {
     return parseInt(number)
   }
   return num > 10000 ? num + '亿' : num + '万'

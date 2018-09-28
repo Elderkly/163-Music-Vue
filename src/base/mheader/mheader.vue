@@ -11,11 +11,11 @@
 
 <script>
 export default {
-  methods:{
+  methods: {
     tosearch() {
       setTimeout(() => {
         this.$router.push('/search')
-      },300)
+      }, 300)
     }
   }
 }

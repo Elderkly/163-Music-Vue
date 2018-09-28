@@ -36,41 +36,41 @@
 </template>
 
 <script>
-import {CODE} from 'common/js/config'
-import {Home_getPersonalizedList} from 'api/index'
+import { CODE } from 'common/js/config'
+import { Home_getPersonalizedList } from 'api/index'
 import scroll from 'base/scroll/scroll'
-import {mapMutations} from 'vuex'
-import {setListenNum} from 'common/js/number'
+import { mapMutations } from 'vuex'
+import { setListenNum } from 'common/js/number'
 
 export default {
-  data(){
+  data() {
     return {
-      list:[],
-      pageY:0
+      list: [],
+      pageY: 0
     }
   },
-  mounted(){
+  mounted() {
     // this.probeType = 3
     // this.listenScroll = true
     this._getNewList()
     this.headerHeight = this.$refs.iconHeader.clientHeight
   },
-  methods:{
+  methods: {
     ToLast() {
       this.$router.back()
     },
     TomusicList(id) {
-        this.setListId(id)
-        this.setNowShow('playlist')
-        this.setShowPlayList(true)
+      this.setListId(id)
+      this.setNowShow('playlist')
+      this.setShowPlayList(true)
     },
     _getNewList() {
       Home_getPersonalizedList().then(res => {
-        if (res.data.code === CODE){
+        if (res.data.code === CODE) {
           const resData = res.data.result
           const Json = []
-          for (let x in resData) {
-            let _Array = {}
+          for (const x in resData) {
+            const _Array = {}
             _Array.id = resData[x].id
             _Array.picUrl = resData[x].picUrl
             _Array.name = resData[x].name
@@ -81,36 +81,36 @@ export default {
         }
       })
     },
-    _scroll(page){
+    _scroll(page) {
       this.pageY = page.y
     },
     ...mapMutations({
-        setListId:'SET_LIST_ID',
-        setNowShow:'SET_NOWSHOW',
-        setShowPlayList:'SET_SHOWPLAYLIST'
-     }),
+      setListId: 'SET_LIST_ID',
+      setNowShow: 'SET_NOWSHOW',
+      setShowPlayList: 'SET_SHOWPLAYLIST'
+    })
   },
-  watch:{
-    '$route'(to,from) {
-      if (to.path === '/alllist'){
+  watch: {
+    '$route'(to, from) {
+      if (to.path === '/alllist') {
         this._getNewList()
       }
     },
-    pageY(newY){
+    pageY(newY) {
       const header = this.$refs.iconHeader
       const headerHeight = header.clientHeight
-      let scrollY = Math.min(0,newY)
+      const scrollY = Math.min(0, newY)
       header.style.transform = `translateY(${scrollY}px)`
       if (newY > 0) {
         // header.style.height = `${this.headerHeight + newY}px`
-        header.style.transform += `scale(${1 + newY / headerHeight })`
-      }else {
+        header.style.transform += `scale(${1 + newY / headerHeight})`
+      } else {
         // header.style.height = this.headerHeight + 'px'
         header.style.transform += `scale(1)`
       }
     }
   },
-  components:{
+  components: {
     scroll
   }
 }

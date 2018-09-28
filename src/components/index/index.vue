@@ -84,114 +84,114 @@ import scroll from 'base/scroll/scroll'
 import Slider from 'base/slider/slider'
 import loading from 'base/loading/loading'
 import download from 'base/download/download'
-import {Home_getBanner,Home_getPersonalizedList,Home_getNewList} from 'api/index'
-import {CODE} from 'common/js/config'
-import {setListenNum} from 'common/js/number'
-import {mapMutations,mapActions} from 'vuex'
+import { Home_getBanner, Home_getPersonalizedList, Home_getNewList } from 'api/index'
+import { CODE } from 'common/js/config'
+import { setListenNum } from 'common/js/number'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
-    data() {
-      return {
-        bannerList:[],
-        RecommendList: [],
-        NewList:[],
-        biglist:[]
-      }
-    },
-    created(){
-      this._getBanner()
-    },
-    methods:{
-      TomusicList(id) {
-        // this.setListType('sonlist')
-        this.setListId(id)
-        this.setNowShow('playlist')
-        this.setShowPlayList(true)
-        this.setListType('list')
-      },
-      ToAlbum(index){
-        this.selectPlay({
-          list:this.NewList,
-          index:index
-        })
-      },
-      toAllList(){
-        this.$router.push('/alllist')
-      },
-      toNewMusic(){
-        this.$router.push('/newmusic')
-      },
-      toRanKing(){
-        this.$router.push('/ranking')
-      },
-      _getBanner() {
-        Home_getBanner().then(res => {
-          if (res.data.code === CODE) {
-            this.bannerList = res.data.banners
-          }
-          this._getRecommendList()
-        })
-      },
-      _getRecommendList() {
-        Home_getPersonalizedList().then(res => {
-          // console.log(res)
-          if (res.data.code === CODE) {
-            const resData = res.data.result.slice(0,6)
-            const Json = []
-            for (let x in resData) {
-              let _Array = {}
-              _Array.id = resData[x].id
-              _Array.picUrl = resData[x].picUrl
-              _Array.name = resData[x].name
-              _Array.playCount = setListenNum(resData[x].playCount)
-              Json.push(_Array)
-              this.biglist.push(_Array)
-            }
-            this.RecommendList = Json
-          }
-          this._getNewList()
-        })
-      },
-      _getNewList() {
-        Home_getNewList().then(res => {
-          if (res.data.code === CODE) {
-            const resData = res.data.result.slice(0,6)
-            const Json = []
-            for (let x in resData) {
-              let _Array = {}
-              _Array.id = resData[x].id
-              _Array.picUrl = resData[x].song.album.picUrl
-              _Array.name = resData[x].name
-              _Array.author = resData[x].song.artists[0].name
-              Json.push(_Array)
-              this.biglist.push(_Array)
-            }
-            this.NewList = Json
-          }
-        })
-      },
-      ...mapMutations({
-        setListId:'SET_LIST_ID',
-        setNowShow:'SET_NOWSHOW',
-        setShowPlayList:'SET_SHOWPLAYLIST',
-        setListType:'SET_LIST_TYPE'
-        // setListType:'SET_LIST_TYPE'
-      }),
-      ...mapActions([
-        'selectPlay'
-      ])
-    },
-    computed:{
-      _getDate(){
-        return new Date().getDate()
-      }
-    },
-    components: {
-      scroll,
-      Slider,
-      loading,
-      download
+  data() {
+    return {
+      bannerList: [],
+      RecommendList: [],
+      NewList: [],
+      biglist: []
     }
+  },
+  created() {
+    this._getBanner()
+  },
+  methods: {
+    TomusicList(id) {
+      // this.setListType('sonlist')
+      this.setListId(id)
+      this.setNowShow('playlist')
+      this.setShowPlayList(true)
+      this.setListType('list')
+    },
+    ToAlbum(index) {
+      this.selectPlay({
+        list: this.NewList,
+        index: index
+      })
+    },
+    toAllList() {
+      this.$router.push('/alllist')
+    },
+    toNewMusic() {
+      this.$router.push('/newmusic')
+    },
+    toRanKing() {
+      this.$router.push('/ranking')
+    },
+    _getBanner() {
+      Home_getBanner().then(res => {
+        if (res.data.code === CODE) {
+          this.bannerList = res.data.banners
+        }
+        this._getRecommendList()
+      })
+    },
+    _getRecommendList() {
+      Home_getPersonalizedList().then(res => {
+        // console.log(res)
+        if (res.data.code === CODE) {
+          const resData = res.data.result.slice(0, 6)
+          const Json = []
+          for (const x in resData) {
+            const _Array = {}
+            _Array.id = resData[x].id
+            _Array.picUrl = resData[x].picUrl
+            _Array.name = resData[x].name
+            _Array.playCount = setListenNum(resData[x].playCount)
+            Json.push(_Array)
+            this.biglist.push(_Array)
+          }
+          this.RecommendList = Json
+        }
+        this._getNewList()
+      })
+    },
+    _getNewList() {
+      Home_getNewList().then(res => {
+        if (res.data.code === CODE) {
+          const resData = res.data.result.slice(0, 6)
+          const Json = []
+          for (const x in resData) {
+            const _Array = {}
+            _Array.id = resData[x].id
+            _Array.picUrl = resData[x].song.album.picUrl
+            _Array.name = resData[x].name
+            _Array.author = resData[x].song.artists[0].name
+            Json.push(_Array)
+            this.biglist.push(_Array)
+          }
+          this.NewList = Json
+        }
+      })
+    },
+    ...mapMutations({
+      setListId: 'SET_LIST_ID',
+      setNowShow: 'SET_NOWSHOW',
+      setShowPlayList: 'SET_SHOWPLAYLIST',
+      setListType: 'SET_LIST_TYPE'
+      // setListType:'SET_LIST_TYPE'
+    }),
+    ...mapActions([
+      'selectPlay'
+    ])
+  },
+  computed: {
+    _getDate() {
+      return new Date().getDate()
+    }
+  },
+  components: {
+    scroll,
+    Slider,
+    loading,
+    download
+  }
 
 }
 </script>

@@ -151,55 +151,55 @@
 </template>
 
 <script>
-import {setCookie,getCookie} from 'common/js/cookie'
-import {mapMutations} from 'vuex'
-import {User_getUserData} from 'api/user'
+import { setCookie, getCookie } from 'common/js/cookie'
+import { mapMutations } from 'vuex'
+import { User_getUserData } from 'api/user'
 import scroll from 'base/scroll/scroll'
-import {CODE} from 'common/js/config'
+import { CODE } from 'common/js/config'
 
 export default {
-  data(){
+  data() {
     return {
-      userData:{
-        profile:{
-          userId:null,
-          avatarUrl:null,
-          followeds:0,
-          follows:0,
-          eventCount:0,
-          nickname:null
+      userData: {
+        profile: {
+          userId: null,
+          avatarUrl: null,
+          followeds: 0,
+          follows: 0,
+          eventCount: 0,
+          nickname: null
         },
-        level:0
+        level: 0
       }
     }
   },
   mounted() {
     User_getUserData(getCookie('userId')).then(res => {
-      if (res.data.code === CODE){
+      if (res.data.code === CODE) {
         this.userData = res.data
       }
     })
   },
-  methods:{
+  methods: {
     toAuthor() {
       this.setAuthorId(this.userData.profile.userId)
       this.setShowAuthor(true)
       this.setNowShow('author')
     },
     logout() {
-      setCookie('userId',null,-1)
+      setCookie('userId', null, -1)
       this.setLogin(false)
       // $store.commit('SET_LOGIN',123)
       this.$router.push('/login')
     },
     ...mapMutations({
-      setLogin:'SET_LOGIN',
-      setShowAuthor:'SET_SHOWAUTHOR',
-      setAuthorId:'SET_AUTHOR_ID',
-       setNowShow:'SET_NOWSHOW'
+      setLogin: 'SET_LOGIN',
+      setShowAuthor: 'SET_SHOWAUTHOR',
+      setAuthorId: 'SET_AUTHOR_ID',
+      setNowShow: 'SET_NOWSHOW'
     })
   },
-  components:{
+  components: {
     scroll
   }
 

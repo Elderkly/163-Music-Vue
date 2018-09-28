@@ -52,42 +52,41 @@
 </template>
 
 <script>
-import {CODE} from 'common/js/config'
-import {Home_getNewList} from 'api/index'
+import { CODE } from 'common/js/config'
+import { Home_getNewList } from 'api/index'
 import scroll from 'base/scroll/scroll'
-import {mapMutations,mapGetters,mapActions} from 'vuex'
-import {setListenNum} from 'common/js/number'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
-  data(){
+  data() {
     return {
-      list:[],
-      pageY:0,
-      show:false
+      list: [],
+      pageY: 0,
+      show: false
     }
   },
-  mounted(){
+  mounted() {
     // this.probeType = 3
     // this.listenScroll = true
     this._getNewList()
     this.headerHeight = this.$refs.iconHeader.clientHeight
   },
-  computed:{
+  computed: {
     ...mapGetters([
       'playItem'
     ])
   },
-  methods:{
+  methods: {
     ToLast() {
       this.$router.back()
     },
     _getNewList() {
       Home_getNewList().then(res => {
-        if (res.data.code === CODE){
+        if (res.data.code === CODE) {
           const resData = res.data.result
           const Json = []
-          for (let x in resData) {
-            let _Array = {}
+          for (const x in resData) {
+            const _Array = {}
             _Array.id = resData[x].id
             _Array.picUrl = resData[x].song.album.picUrl
             _Array.name = resData[x].song.album.name
@@ -98,54 +97,54 @@ export default {
         }
       })
     },
-    _scroll(page){
+    _scroll(page) {
       this.pageY = page.y
     },
-    toPlayer(index){
+    toPlayer(index) {
       this.selectPlay({
-        list:this.list,
-        index:index
+        list: this.list,
+        index: index
       })
     },
-    playList(){
+    playList() {
       this.selectPlay({
-        list:this.list,
-        index:0
+        list: this.list,
+        index: 0
       })
     },
     ...mapMutations({
-        setListId:'SET_LIST_ID',
-        setNowShow:'SET_NOWSHOW',
-        setShowPlayList:'SET_SHOWPLAYLIST'
-     }),
+      setListId: 'SET_LIST_ID',
+      setNowShow: 'SET_NOWSHOW',
+      setShowPlayList: 'SET_SHOWPLAYLIST'
+    }),
     ...mapActions([
       'selectPlay'
     ])
   },
-  watch:{
-    '$route'(to,from) {
-      if (to.path === '/newmusic'){
+  watch: {
+    '$route'(to, from) {
+      if (to.path === '/newmusic') {
         this._getNewList()
       }
     },
-    pageY(newY){
+    pageY(newY) {
       const header = this.$refs.iconHeader
       const headerHeight = header.clientHeight
-      let scrollY = Math.min(0,newY)
+      const scrollY = Math.min(0, newY)
       header.style.transform = `translateY(${scrollY}px)`
       if (newY > 0) {
-        header.style.transform += `scale(${1 + newY / headerHeight })`
-      }else {
+        header.style.transform += `scale(${1 + newY / headerHeight})`
+      } else {
         header.style.transform += `scale(1)`
-        if (-newY > headerHeight){
+        if (-newY > headerHeight) {
           this.show = true
-        }else {
+        } else {
           this.show = false
         }
       }
     }
   },
-  components:{
+  components: {
     scroll
   }
 }

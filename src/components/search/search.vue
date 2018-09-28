@@ -49,35 +49,35 @@
 
 <script>
 import scroll from 'base/scroll/scroll'
-import {CODE} from 'common/js/config'
+import { CODE } from 'common/js/config'
 import minloading from 'base/163loading/163loading'
-import {mapActions,mapGetters} from 'vuex'
-import {setCookie,getCookie} from 'common/js/cookie'
-import {Search_getHot,Search_suggest,Search_search} from 'api/search'
+import { mapActions, mapGetters } from 'vuex'
+import { setCookie, getCookie } from 'common/js/cookie'
+import { Search_getHot, Search_suggest, Search_search } from 'api/search'
 
 export default {
-  data(){
+  data() {
     return {
-      animate:false,
-      input:'',
-      hot:[],
-      suggest:[],
-      search:[],
-      forSwitch:true,
-      selectList:[],
-      loading:false
+      animate: false,
+      input: '',
+      hot: [],
+      suggest: [],
+      search: [],
+      forSwitch: true,
+      selectList: [],
+      loading: false
     }
   },
-  computed:{
+  computed: {
     ...mapGetters([
-      'playItem',
+      'playItem'
     ])
   },
-  mounted(){
+  mounted() {
     setTimeout(() => {
       this.animate = true
-    },30)
-    this.selectList == getCookie('selectList')
+    }, 30)
+    this.selectList === parseInt(getCookie('selectList'))
     // console.log(this.selectList,getCookie('selectList'))
     Search_getHot().then(res => {
       if (res.data.code === CODE) {
@@ -85,14 +85,14 @@ export default {
       }
     })
   },
-  methods:{
+  methods: {
     ToLast() {
       this.$router.back()
     },
     toPlay(index) {
       this.selectPlay({
-        list:this.search,
-        index:index
+        list: this.search,
+        index: index
       })
     },
     submit() {
@@ -102,25 +102,24 @@ export default {
       this.input = e
       this.getSearchData(e)
     },
-    getSearchData(value){
+    getSearchData(value) {
       this.loading = true
       if (this.findIndex(value) === 1) {
         this.selectList.push(value)
-        setCookie('selectList',this.selectList)
+        setCookie('selectList', this.selectList)
       }
       Search_search(value).then(res => {
         this.suggest = []
         setTimeout(() => {
           this.loading = false
-        },300) 
+        }, 300)
         if (res.data.code === CODE) {
           this._setsearchData(res.data.result.songs)
         }
       })
-      
     },
     //  判断搜索结果是否已存在
-    findIndex(value){
+    findIndex(value) {
       let _switch = 1
       this.selectList.findIndex(res => {
         if (res === value) _switch = 0
@@ -128,9 +127,9 @@ export default {
       return _switch
     },
     //  制作搜索结果数组
-    _setsearchData(list){
-      let returnData = []
-      for (let x in list){
+    _setsearchData(list) {
+      const returnData = []
+      for (const x in list) {
         const data = {}
         data.id = list[x].id
         data.name = list[x].name
@@ -140,44 +139,44 @@ export default {
       this.search = returnData
     },
     //  制作搜索建议数组
-    _setsuggestData(list){
-      const forList = [list.albums,list.artists,list.songs]
-      try{
-        for (let i in forList){
+    _setsuggestData(list) {
+      const forList = [list.albums, list.artists, list.songs]
+      try {
+        for (const i in forList) {
           if (forList[i].length > 0) {
-            for (let x in forList[i]){
-              if (this.input != '') this.suggest.push(forList[i][x])
+            for (const x in forList[i]) {
+              if (this.input !== '') this.suggest.push(forList[i][x])
             }
           }
         }
         this.forSwitch = true
-      }catch(e){
+      } catch (e) {
         this.forSwitch = true
       }
     },
     ...mapActions([
-      'selectPlay',
-    ]),
+      'selectPlay'
+    ])
   },
-  watch:{
-    '$route'(to,from){
+  watch: {
+    '$route'(to, from) {
       this.input = ''
-      if (to.path === '/search'){
+      if (to.path === '/search') {
         this.animate = true
         this.search = []
         this.suggest = []
         setTimeout(() => {
           this.$refs.input.focus()
-        },300)
-      }else {
+        }, 300)
+      } else {
         this.animate = false
       }
     },
-    input(value){
+    input(value) {
       this.suggest = []
-      if (this.forSwitch){
+      if (this.forSwitch) {
         this.search = []
-        if (value != '') {
+        if (value !== '') {
           Search_suggest(value).then(res => {
             if (res.data.code === CODE) {
               this.forSwitch = false
@@ -188,7 +187,7 @@ export default {
       }
     }
   },
-  components:{
+  components: {
     scroll,
     minloading
   }

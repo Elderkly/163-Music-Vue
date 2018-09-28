@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {HOST} from 'common/js/config'
+import { HOST } from 'common/js/config'
 
 //  获取热搜词汇
 export const Search_getHot = () => {

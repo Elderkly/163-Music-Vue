@@ -90,13 +90,11 @@
 </template>
 
 <script>
-import {CODE} from 'common/js/config'
-import {Home_getPersonalizedList} from 'api/index'
 import scroll from 'base/scroll/scroll'
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
-  methods:{
+  methods: {
     ToLast() {
       this.$router.back()
     },
@@ -107,13 +105,13 @@ export default {
       this.setShowPlayList(true)
     },
     ...mapMutations({
-        setListId:'SET_LIST_ID',
-        setNowShow:'SET_NOWSHOW',
-        setShowPlayList:'SET_SHOWPLAYLIST',
-        setListType:'SET_LIST_TYPE'
-    }),
+      setListId: 'SET_LIST_ID',
+      setNowShow: 'SET_NOWSHOW',
+      setShowPlayList: 'SET_SHOWPLAYLIST',
+      setListType: 'SET_LIST_TYPE'
+    })
   },
-  components:{
+  components: {
     scroll
   }
 }

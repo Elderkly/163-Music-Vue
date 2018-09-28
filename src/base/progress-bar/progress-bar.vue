@@ -14,10 +14,10 @@
 </template>
 <script>
 export default {
-  props:{
-    percentageNum:{
-      type:Number,
-      default:0
+  props: {
+    percentageNum: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -43,21 +43,21 @@ export default {
         Math.max 限制移动最小值为0%
         两者结合可限制移动范围在0% ~ 100%
       */
-      this.percentage = Math.max(0,(Math.min(this.touch.maxWidth - 0.8,moveX + this.touch.left)) / (this.touch.maxWidth - 0.8))
+      this.percentage = Math.max(0, (Math.min(this.touch.maxWidth - 0.8, moveX + this.touch.left)) / (this.touch.maxWidth - 0.8))
       this._offset(this.percentage)
-      this.$emit('touchmove',this.percentage)
+      this.$emit('touchmove', this.percentage)
     },
     touchend(e) {
       this.init = false
-      this.$emit('touchend',this.percentage)
+      this.$emit('touchend', this.percentage)
     },
     _offset(number) {
-      const num =  number * 100
+      const num = number * 100
       this.$refs.progress.style.width = `${num}%`
       this.$refs.button.style.marginLeft = `${num}%`
     }
   },
-  watch:{
+  watch: {
     percentageNum(newPercentageNum) {
       if (newPercentageNum >= 0 && !this.init) {
         this._offset(newPercentageNum)

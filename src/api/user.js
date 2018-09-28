@@ -1,6 +1,5 @@
 import axios from 'axios'
-import {HOST} from 'common/js/config'
-import {getCookie} from 'common/js/cookie'
+import { HOST } from 'common/js/config'
 
 //  获取用户歌单
 export const User_getUserList = (userId) => {

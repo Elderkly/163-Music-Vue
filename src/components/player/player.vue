@@ -62,43 +62,42 @@
 
 <script>
 import bus from 'common/vue/bus'
-import {mapGetters,mapMutations} from 'vuex'
-import {shuffle} from 'common/js/util'
-import {Music_GetSrc,Music_GetImg,Music_Comment} from 'api/music'
-import {CODE} from 'common/js/config'
+import { mapGetters, mapMutations } from 'vuex'
+import { shuffle } from 'common/js/util'
+import { Music_GetSrc, Music_GetImg, Music_Comment } from 'api/music'
+import { CODE } from 'common/js/config'
 import progressBar from 'base/progress-bar/progress-bar'
-
 
 export default {
   data() {
     return {
-      musicSrc:null,
-      musicImg:null,
-      bgImg:null,
-      Time:0,
-      sumTime:0,
-      percentageNum:0,
-      comment:0
+      musicSrc: null,
+      musicImg: null,
+      bgImg: null,
+      Time: 0,
+      sumTime: 0,
+      percentageNum: 0,
+      comment: 0
     }
   },
-  mounted(){
+  mounted() {
     //  移动端Audio 自动播放
     // const _this = this
     // document.querySelector('html').addEventListener('touchstart',function(){
     //   _this.$refs.audio.play()
     // })
     const _this = this
-    bus.$on('setplaying',function(){
+    bus.$on('setplaying', function() {
       _this.play()
     })
   },
   computed: {
-    turnClass(){
+    turnClass() {
       return this.playIng ? 'play' : 'play pause'
     },
     typeClass() {
       let className
-      switch (this.playType){
+      switch (this.playType) {
         case 'list':
           className = 'icon-liebiaoxunhuan'
           break
@@ -111,13 +110,13 @@ export default {
       }
       return className
     },
-    buttonClass(){
+    buttonClass() {
       return this.playIng ? 'icon-zanting' : 'icon-bofang1'
     },
-    needleClass(){
+    needleClass() {
       return this.playIng ? 'needle needle-play' : 'needle'
     },
-    turnClassSlow(){
+    turnClassSlow() {
       return this.playIng ? 'play-slow' : 'play-slow pause'
     },
     ...mapGetters([
@@ -132,7 +131,7 @@ export default {
     ])
   },
   methods: {
-    showPlay(){
+    showPlay() {
       this.setPlayShow(true)
       this.setNowShow('player')
     },
@@ -152,7 +151,7 @@ export default {
     },
     ended() {
       this.next()
-      this.setplayIng(false)   
+      this.setplayIng(false)
     },
     touchMove(percentage) {
       this.MoveSwitch = true
@@ -165,7 +164,7 @@ export default {
     },
     format(time) {
       /*
-        3 | 4 =  7 
+        3 | 4 =  7
         转换为二进制之后011|100  相加得到111=7
       */
       time = time | 0
@@ -205,7 +204,7 @@ export default {
       this.setplayList(list)
     },
     setNewPlayIndex(list) {
-      const index = list.findIndex( item => {
+      const index = list.findIndex(item => {
         return item.id === this.playItem.id
       })
       this.setplayIndex(index)
@@ -213,27 +212,27 @@ export default {
     last() {
       if (!this.audioReady) return
       const index = this.playIndex - 1 < 0 ? this.playList.length - 1 : this.playIndex - 1
-      this.setplayIng(false) 
+      this.setplayIng(false)
       this.setplayIndex(index)
       this.audioReady = false
     },
     next() {
       if (!this.audioReady) return
       const index = this.playIndex + 1 === this.playList.length ? 0 : this.playIndex + 1
-      this.setplayIng(false) 
+      this.setplayIng(false)
       this.setplayIndex(index)
       this.audioReady = false
     },
     play() {
-      this.playIng ? this.$refs.audio.pause() :this.$refs.audio.play()
-      this.setplayIng(!this.playIng)    
+      this.playIng ? this.$refs.audio.pause() : this.$refs.audio.play()
+      this.setplayIng(!this.playIng)
     },
     back() {
       // this.setFullScreen(false)
       this.setPlayShow(false)
       setTimeout(() => {
         this.setNowShow('playlist')
-      },300)
+      }, 300)
     },
     _getMusicSrc(id) {
       Music_GetSrc(id).then(res => {
@@ -241,18 +240,18 @@ export default {
           if (res.data.data[0].url === null) {
             setTimeout(() => {
               alert('您还未购买这首歌的版权')
-            },300)
+            }, 300)
             return
           }
           this.musicSrc = res.data.data[0].url
           // 在下次 DOM 更新循环结束之后执行延迟回调  在下一次DOM更新循环结束后播放最新获取的歌曲
-          this.$nextTick(()=>{
+          this.$nextTick(() => {
             this.$refs.audio.play()
             this.audioReady = true
           })
           setTimeout(() => {
             this.setplayIng(true)
-          },300)
+          }, 300)
         }
         this._getMusicImg(id)
         this._getMusicComment(id)
@@ -263,10 +262,10 @@ export default {
         if (res.data.code === CODE) {
           this.musicImg = res.data.songs[0].al.picUrl
           //  向中央组件发送歌曲图片信息
-          bus.$emit('passImg',this.musicImg)
+          bus.$emit('passImg', this.musicImg)
           setTimeout(() => {
             this.bgImg = this.musicImg
-          },900)
+          }, 900)
         }
       })
     },
@@ -280,28 +279,28 @@ export default {
     },
     ...mapMutations({
       // setFullScreen:'SET_FULLSCREEN',
-      setplayIng:'SET_PLAY_ING',
-      setplayType:'SET_PLAY_TYPE',
-      setplayIndex:'SET_PLAY_INDEX',
-      setplayList:'SET_PLAY_LIST',
-      setNowShow:'SET_NOWSHOW',
-      setPlayShow:'SET_SHOWPLAYER'
+      setplayIng: 'SET_PLAY_ING',
+      setplayType: 'SET_PLAY_TYPE',
+      setplayIndex: 'SET_PLAY_INDEX',
+      setplayList: 'SET_PLAY_LIST',
+      setNowShow: 'SET_NOWSHOW',
+      setPlayShow: 'SET_SHOWPLAYER'
     })
 
   },
   watch: {
-    playItem(newList,oldList){
+    playItem(newList, oldList) {
       if (newList.id === oldList.id) {
         return
       }
       this.oldList = oldList
       // console.log(newList,oldList)
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this._getMusicSrc(newList.id)
       })
     }
   },
-  components:{
+  components: {
     progressBar
   }
 }

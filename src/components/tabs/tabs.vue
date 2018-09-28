@@ -47,16 +47,16 @@ export default {
       type: Array,
       required: true
     },
-    sliderW: {  //  白条宽度
+    sliderW: { //  白条宽度
       type: Number,
       default: 30
     },
     callback: {
       type: Function,
-      default: function () {}
+      default: function() {}
     }
   },
-  data () {
+  data() {
     return {
       containerW: window.screen.availWidth < 300 ? 360 : window.screen.availWidth,
       cur: 0,
@@ -69,21 +69,21 @@ export default {
     }
   },
   computed: {
-    tabItemW () { //  每个tab的宽度
+    tabItemW() { //  每个tab的宽度
       return this.containerW / this.list.length
     },
-    wRate () {
+    wRate() {
       return 1 / this.list.length
     },
-    sliderInitX () {  //  每个标签下标白线的位置
+    sliderInitX() { //  每个标签下标白线的位置
       return (this.tabItemW - this.sliderW) / 2
     },
-    halfContentW () {
+    halfContentW() {
       return this.containerW / 2
     }
   },
   methods: {
-    doAnimationFrame (interval, fn, completeFn) {
+    doAnimationFrame(interval, fn, completeFn) {
       //  更为流畅的动画
       var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
       //  取消动画
@@ -91,10 +91,10 @@ export default {
       if (rafReqId) {
         cancelRaf(rafReqId)
       }
-      var start = window.performance.now()  // 获取当前页面打开了多长时间 返回一个时间戳,以毫秒为单位,精确到千分之一毫秒.
+      var start = window.performance.now() // 获取当前页面打开了多长时间 返回一个时间戳,以毫秒为单位,精确到千分之一毫秒.
       var offset = 0
 
-      var step = function (timestamp) {
+      var step = function(timestamp) {
         //  timestamp 函数触发时间
         //  获取动画进行了多长时间
         offset = timestamp - start
@@ -103,7 +103,7 @@ export default {
         if (offset <= interval) {
           fn(offset, interval)
           rafReqId = raf(step)
-        } else {  //  否则停止
+        } else { //  否则停止
           fn(interval, interval)
           completeFn()
           rafReqId = null
@@ -111,7 +111,7 @@ export default {
       }
       rafReqId = raf(step)
     },
-    handleClick (e) {
+    handleClick(e) {
       var index = parseInt(e.target.getAttribute('data-index'))
       if (isNaN(index) || index === this.cur) {
         return
@@ -132,26 +132,26 @@ export default {
         this.setContentX(contentX - rDif)
         this.setSliderX(sliderX + r * tabDif + this.sliderInitX)
         this.doSliderScale(rDif % this.containerW)
-      }, function () {
+      }, function() {
         isEndAnimating = false
       })
     },
-    setSliderScale (scale) {
+    setSliderScale(scale) {
       this.sliderScale = scale
     },
-    setSliderX (moveOffsetX) {
+    setSliderX(moveOffsetX) {
       this.sliderX = moveOffsetX
     },
-    setContentX (moveOffsetX) {
+    setContentX(moveOffsetX) {
       this.contentX = moveOffsetX
     },
-    reset () {
+    reset() {
       isStarted = false
       moveOffsetX = 0
       moveOffsetY = 0
       totalOffsetX = 0
     },
-    addEndAnimation (contentMoveOffsetX) {
+    addEndAnimation(contentMoveOffsetX) {
       var sliderX = this.sliderX
       var contentX = this.contentX
       this.doAnimationFrame(this.animateTime || END_TIME, (offset, interval) => {
@@ -160,14 +160,14 @@ export default {
         this.setContentX(contentF)
         this.setSliderX(sliderX - r * (contentMoveOffsetX * this.wRate))
         this.doSliderScale(contentF % this.containerW)
-      }, function () {
+      }, function() {
         isEndAnimating = false
       })
     },
-    doSliderScale (contentOffset) { // Move时改变白条大小
+    doSliderScale(contentOffset) { // Move时改变白条大小
       contentOffset = Math.abs(contentOffset) //  取移动距离的绝对值
       var scale = 1
-      if (this.halfContentW > contentOffset) {    //  如果移动距离小于屏幕一半
+      if (this.halfContentW > contentOffset) { //  如果移动距离小于屏幕一半
         scale = 1 + contentOffset / this.halfContentW * SCALE
       } else {
         scale = (1 + SCALE) - (contentOffset - this.halfContentW) / this.halfContentW * SCALE
@@ -175,13 +175,13 @@ export default {
       //  存储数值
       this.setSliderScale(scale)
     },
-    doEndAnimate (offset) {
+    doEndAnimate(offset) {
       if (offset === 0) {
         return
       }
       isEndAnimating = true
-      if (Math.abs(offset) > EFFECT_DISTANCE) { //如果偏移量大于规定的最小偏移值则进行移动
-        if (offset >  0){ // 右移
+      if (Math.abs(offset) > EFFECT_DISTANCE) { // 如果偏移量大于规定的最小偏移值则进行移动
+        if (offset > 0) { // 右移
           this.addEndAnimation(this.containerW - offset)
           this.cur--
         } else { // 左移
@@ -193,15 +193,15 @@ export default {
         this.addEndAnimation(-offset)
       }
     },
-    doEnd () {
+    doEnd() {
       this.doEndAnimate(totalOffsetX)
     },
-    handleTouchStart (event) {
+    handleTouchStart(event) {
       isStarted = true
       startX = event.touches[0].clientX
       startY = event.touches[0].clientY
     },
-    handleTouchMove (event) {
+    handleTouchMove(event) {
       if (!isStarted || isEndAnimating) {
         return
       }
@@ -239,14 +239,14 @@ export default {
       event.preventDefault()
       event.stopPropagation()
     },
-    handleTouchEnd () {
+    handleTouchEnd() {
       if (!isStarted) {
         return
       }
       this.doEnd()
       this.reset()
     },
-    handleTouchCancel () {
+    handleTouchCancel() {
       if (!isStarted) {
         return
       }
@@ -254,7 +254,7 @@ export default {
       this.reset()
     }
   },
-  mounted () {
+  mounted() {
     this.setSliderX(this.sliderInitX)
   }
 }

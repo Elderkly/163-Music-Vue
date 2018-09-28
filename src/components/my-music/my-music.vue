@@ -56,30 +56,30 @@
 </template>
 
 <script>
-import {CODE} from 'common/js/config'
-import {User_getUserList} from 'api/user'
-import {getCookie} from 'common/js/cookie'
+import { CODE } from 'common/js/config'
+import { User_getUserList } from 'api/user'
+import { getCookie } from 'common/js/cookie'
 import scroll from 'base/scroll/scroll'
-import {mapGetters,mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import sonlist from 'base/sonlist/sonlist'
 
 export default {
   data() {
     return {
-      creatorlist:[], //  用户创建的歌单
-      collectList:[],  //  用户收藏的歌单
-      pageY:0,
-      fixedSwitch:false,
-      _userId:null
+      creatorlist: [], //  用户创建的歌单
+      collectList: [], //  用户收藏的歌单
+      pageY: 0,
+      fixedSwitch: false,
+      _userId: null
     }
   },
-  created(){
-     this.listenScroll = true
-     this.probeType = 3
-     this._userId = getCookie('userId')
-     this._getList()
+  created() {
+    this.listenScroll = true
+    this.probeType = 3
+    this._userId = getCookie('userId')
+    this._getList()
   },
-  computed:{
+  computed: {
     ...mapGetters([
       'fullScreen',
       'playList',
@@ -87,43 +87,43 @@ export default {
     ])
   },
   methods: {
-    _scroll(e){
+    _scroll(e) {
       this.pageY = e.y
     },
-    _getList(){
+    _getList() {
       const _this = this
       this.creatorlist = []
       this.collectList = []
       User_getUserList(getCookie('userId')).then(res => {
-        if (res.data.code === CODE){
+        if (res.data.code === CODE) {
           _this._disposeData(res.data.playlist)
         }
       })
     },
-    setFixedTransFrom(num){
+    setFixedTransFrom(num) {
       try {
         this.$refs.fixedDiv.style.transform = `translate3d(0px, ${num}px, 0px)`
-      }catch(e) {
+      } catch (e) {
         // console.log(this.$refs.fixedDiv)
       }
     },
-    setFixedText(text){
-      try{
+    setFixedText(text) {
+      try {
         this.$refs.fixedText.innerHTML = text
-      }catch(e) {
+      } catch (e) {
         // console.log(this.$refs.fixedText)
       }
     },
-    setfixedSwitch(_switch){
+    setfixedSwitch(_switch) {
       this.fixedSwitch = _switch
     },
-    _disposeData(list){
+    _disposeData(list) {
       this._userId = getCookie('userId')
       // console.log(this._userId)
-      for (let x in list) {
-        list[x].userId == this._userId ? 
-        this.creatorlist.push(list[x]) : 
-        this.collectList.push(list[x])
+      for (const x in list) {
+        list[x].userId === parseInt(this._userId)
+          ? this.creatorlist.push(list[x])
+          : this.collectList.push(list[x])
       }
     },
     // TomusicList(id) {
@@ -131,20 +131,20 @@ export default {
     //   this.$router.push('/musicList')
     // },
     ...mapMutations({
-      setListId:'SET_LIST_ID'
+      setListId: 'SET_LIST_ID'
     })
   },
-  components:{
+  components: {
     scroll,
     sonlist
   },
-  watch:{
-    userId(newId){
+  watch: {
+    userId(newId) {
       // console.log(newId)
       this._getList()
     },
-    '$route'(to){
-      to.path == '/my-music' ? (this._getList(),this.fixedSwitch = false) : ''
+    '$route'(to) {
+      to.path === '/my-music' ? (this._getList(), this.fixedSwitch = false) : ''
     }
   }
 }

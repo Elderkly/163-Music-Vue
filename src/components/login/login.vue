@@ -28,22 +28,22 @@
 </template>
 
 <script>
-import {login} from 'api/login'
-import {setCookie} from 'common/js/cookie'
-import {mapMutations,mapGetters} from 'vuex'
+import { login } from 'api/login'
+import { setCookie } from 'common/js/cookie'
+import { mapMutations, mapGetters } from 'vuex'
 import loading from 'base/loading/loading'
 
 export default {
-  data(){
+  data() {
     return {
-      focus:false,
-      tel:null,
-      password:null,
-      loginSwitch:false
+      focus: false,
+      tel: null,
+      password: null,
+      loginSwitch: false
     }
   },
-  computed:{
-    loginClass(){
+  computed: {
+    loginClass() {
       return this.tel !== null && this.password !== null ? 'button' : 'button falseLogin'
     },
     ...mapGetters([
@@ -53,43 +53,43 @@ export default {
   components: {
     loading
   },
-  methods:{
-    _focus(e){
+  methods: {
+    _focus(e) {
       this.focus = e.target.type
     },
-    _blur(e){
-      e.target.value !== '' ? 
-      e.target.type === 'number' ? 
-      this.tel = e.target.value : 
-      this.password = e.target.value : 
-      e.target.type === 'number' ? 
-      this.tel = null : 
-      this.password = null
-        
+    _blur(e) {
+      e.target.value !== ''
+        ? e.target.type === 'number'
+          ? this.tel = e.target.value
+          : this.password = e.target.value
+        : e.target.type === 'number'
+          ? this.tel = null
+          : this.password = null
+
       this.focus = false
     },
-    input(e){
-      e.target.value !== '' ? this.password = e.target.value :  this.password = null
+    input(e) {
+      e.target.value !== '' ? this.password = e.target.value : this.password = null
     },
-    login(){
+    login() {
       if (this.tel !== null && this.password !== null) {
         this.loginSwitch = true
-        login(this.tel,this.password).then(res => {
+        login(this.tel, this.password).then(res => {
           this.loginSwitch = false
-          if (res.data.code === 200){
+          if (res.data.code === 200) {
             this.setUsreId(res.data.account.id)
-            setCookie('userId',res.data.account.id,7)
+            setCookie('userId', res.data.account.id, 7)
             this.$router.push('/index')
-          }else if (res.data.code === 415) {
+          } else if (res.data.code === 415) {
             alert('登录过于频繁 请稍候再试')
-          }else {
+          } else {
             alert('用户名或密码错误')
           }
         })
       }
     },
     ...mapMutations({
-      setUsreId:'SET_USER_ID'
+      setUsreId: 'SET_USER_ID'
     })
   }
 }

@@ -30,4 +30,3 @@ export const SET_AUTHOR_ID = 'SET_AUTHOR_ID'
 
 export const SET_LIST_TYPE = 'SET_LIST_TYPE'
 
-

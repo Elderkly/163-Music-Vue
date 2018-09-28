@@ -71,40 +71,40 @@
 </template>
 
 <script>
-import {mapGetters,mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import scroll from 'base/scroll/scroll'
 import sonlist from 'base/sonlist/sonlist'
-import {User_getUserList,User_getUserData} from 'api/user'
-import {CODE} from 'common/js/config'
-import {getCookie} from 'common/js/cookie'
+import { User_getUserList, User_getUserData } from 'api/user'
+import { CODE } from 'common/js/config'
+import { getCookie } from 'common/js/cookie'
 import download from 'base/download/download'
 
 export default {
-  data(){
+  data() {
     return {
-      fixedSwitch:false,
-      creatorlist:[],
-      collectList:[],
-      pageY:0,
-      fixedmiddleSwitch:false,
-      user:{
-        bgImg:null,
-        headerImg:null,
-        name:null,
-        followeds:0,
-        follows:0,
-        level:0,
-        gender:0,
-        authorId:null
+      fixedSwitch: false,
+      creatorlist: [],
+      collectList: [],
+      pageY: 0,
+      fixedmiddleSwitch: false,
+      user: {
+        bgImg: null,
+        headerImg: null,
+        name: null,
+        followeds: 0,
+        follows: 0,
+        level: 0,
+        gender: 0,
+        authorId: null
       },
-      userId:null
+      userId: null
     }
   },
-  created(){
+  created() {
     this.listenScroll = true
     this.probeType = 3
   },
-  computed:{
+  computed: {
     ...mapGetters([
       'showAuthor',
       'authorId',
@@ -116,91 +116,91 @@ export default {
       this.setShowAuthor(false)
       this.setNowShow('')
     },
-    _getUserList(id){
+    _getUserList(id) {
       User_getUserList(id).then(res => {
-        if (res.data.code === CODE){
+        if (res.data.code === CODE) {
           this._disposeData(res.data.playlist)
         }
       })
     },
-    _getUserData(id){
+    _getUserData(id) {
       this.userId = getCookie('userId')
       User_getUserData(id).then(res => {
-        if (res.data.code === CODE){
+        if (res.data.code === CODE) {
           this.user = {
-            bgImg:res.data.profile.backgroundUrl,
-            headerImg:res.data.profile.avatarUrl,
-            name:res.data.profile.nickname,
-            followeds:res.data.profile.followeds,
-            follows:res.data.profile.follows,
-            level:res.data.level,
-            gender:res.data.profile.gender,
-            authorId:res.data.profile.userId
+            bgImg: res.data.profile.backgroundUrl,
+            headerImg: res.data.profile.avatarUrl,
+            name: res.data.profile.nickname,
+            followeds: res.data.profile.followeds,
+            follows: res.data.profile.follows,
+            level: res.data.level,
+            gender: res.data.profile.gender,
+            authorId: res.data.profile.userId
           }
         }
       })
     },
-    _disposeData(list){
+    _disposeData(list) {
       this.creatorlist = []
       this.collectList = []
-      for (let x in list) {
-        list[x].userId == this.authorId ? 
-        this.creatorlist.push(list[x]) : 
-        this.collectList.push(list[x])
+      for (const x in list) {
+        list[x].userId === parseInt(this.authorId)
+          ? this.creatorlist.push(list[x])
+          : this.collectList.push(list[x])
       }
     },
-    setFixedTransFrom(num){
+    setFixedTransFrom(num) {
       try {
         // console.log(num)
         this.$refs.fixedDiv.style.transform = `translate3d(0px, ${num + this.$refs.header.clientHeight}px, 0px)`
-      }catch(e) {
+      } catch (e) {
         // console.log(this.$refs.fixedDiv)
       }
     },
-    setFixedText(text){
-      try{
+    setFixedText(text) {
+      try {
         this.$refs.fixedText.innerHTML = text
-      }catch(e) {
+      } catch (e) {
         // console.log(this.$refs.fixedText)
       }
     },
-    setfixedSwitch(_switch){
+    setfixedSwitch(_switch) {
       this.fixedSwitch = _switch
     },
-    _scroll(e){
+    _scroll(e) {
       this.pageY = e.y
     },
     ...mapMutations({
-      setShowAuthor:'SET_SHOWAUTHOR',
-      setNowShow:'SET_NOWSHOW',
+      setShowAuthor: 'SET_SHOWAUTHOR',
+      setNowShow: 'SET_NOWSHOW'
     })
   },
-  components:{
+  components: {
     scroll,
     sonlist,
     download
   },
-  watch:{
-    showAuthor(newSwitch){
-      if (newSwitch){
+  watch: {
+    showAuthor(newSwitch) {
+      if (newSwitch) {
         this.user = {
-          bgImg:null,
-          headerImg:null,
-          name:null,
-          followeds:0,
-          follows:0,
-          level:0,
-          gender:0,
-          authorId:null
-        },
+          bgImg: null,
+          headerImg: null,
+          name: null,
+          followeds: 0,
+          follows: 0,
+          level: 0,
+          gender: 0,
+          authorId: null
+        }
         this._getUserList(this.authorId)
         this._getUserData(this.authorId)
       }
     },
-    pageY(newY){
+    pageY(newY) {
       const userName = this.$refs.username.offsetTop
-      const hiddenDom = this.$refs.hiddenUserName
-      const result = Math.max(0,1 - -newY / userName)
+      // const hiddenDom = this.$refs.hiddenUserName
+      const result = Math.max(0, 1 - -newY / userName)
       this.$refs.hiddenUserName.style.transform = `translate3d(0px, ${result * 100}%, 0px)`
     }
   }

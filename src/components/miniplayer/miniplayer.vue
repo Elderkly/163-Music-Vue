@@ -20,33 +20,33 @@
 
 <script>
 import bus from 'common/vue/bus'
-import {mapGetters,mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-  data(){
+  data() {
     return {
-      musicImg:null
+      musicImg: null
     }
   },
-  computed:{
+  computed: {
     ...mapGetters([
       'showPlayer',
       'playItem',
       'playIng'
     ]),
-    buttonClass(){
+    buttonClass() {
       return this.playIng ? 'icon-zanting' : 'icon-bofang1'
-    },
+    }
   },
   created() {
     const _this = this
-    bus.$on('passImg',function(img) {
+    bus.$on('passImg', function(img) {
       _this.musicImg = img
       // console.log(_this.musicImg)
     })
   },
-  methods:{
-    showPlay(){
+  methods: {
+    showPlay() {
       this.setPlayShow(true)
       this.setNowShow('player')
     },
@@ -56,11 +56,11 @@ export default {
       // }
       // this.playIng ? this.$refs.audio.pause() :this.$refs.audio.play()
       bus.$emit('setplaying')
-      // this.setplayIng(!this.playIng)    
+      // this.setplayIng(!this.playIng)
     },
     ...mapMutations({
-      setNowShow:'SET_NOWSHOW',
-      setPlayShow:'SET_SHOWPLAYER'
+      setNowShow: 'SET_NOWSHOW',
+      setPlayShow: 'SET_SHOWPLAYER'
     })
   }
 }

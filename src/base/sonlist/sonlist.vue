@@ -38,22 +38,22 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
-  props:{
-    creatorlist:{
-      type:Array
+  props: {
+    creatorlist: {
+      type: Array
     },
-    collectList:{
-      type:Array
+    collectList: {
+      type: Array
     },
-    pageY:{
-      type:Number
+    pageY: {
+      type: Number
     },
-    errorHeight:{
-      type:Number,
-      default:0
+    errorHeight: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
@@ -64,41 +64,41 @@ export default {
         this.setNowShow('playlist')
         this.setShowPlayList(true)
         this.setListType('list')
-      },300)
+      }, 300)
     },
     ...mapMutations({
-      setListId:'SET_LIST_ID',
-      setNowShow:'SET_NOWSHOW',
-      setShowPlayList:'SET_SHOWPLAYLIST',
-      setListType:'SET_LIST_TYPE'
+      setListId: 'SET_LIST_ID',
+      setNowShow: 'SET_NOWSHOW',
+      setShowPlayList: 'SET_SHOWPLAYLIST',
+      setListType: 'SET_LIST_TYPE'
     })
   },
-  watch:{
-    pageY(newY){
+  watch: {
+    pageY(newY) {
       const pageY = -newY
       const createorHeader = this.$refs.createorHeader.offsetTop
       const collectHeader = this.$refs.collectHeader.offsetTop
       const collectClientHeight = collectHeader - this.$refs.collectHeader.clientHeight
       const offsetY = newY + collectClientHeight > -this.$refs.collectHeader.clientHeight ? newY + collectClientHeight : 0
       if (pageY > createorHeader - this.errorHeight) {
-        this.$emit('setfixedSwitch',true)
+        this.$emit('setfixedSwitch', true)
         // this.fixedSwitch = true
         if (pageY > collectClientHeight - this.errorHeight) {
-          this.$emit('setFixedTransFrom',(offsetY - this.errorHeight) < -this.$refs.collectHeader.clientHeight ? 0 : (offsetY - this.errorHeight))
+          this.$emit('setFixedTransFrom', (offsetY - this.errorHeight) < -this.$refs.collectHeader.clientHeight ? 0 : (offsetY - this.errorHeight))
           // this.$refs.fixedDiv.style.transform = `translate3d(0px, ${offsetY}px, 0px)`
-          if (pageY > collectHeader  - this.errorHeight){
-            this.$emit('setFixedText',this.$refs.collectHeaderText.innerHTML)
+          if (pageY > collectHeader - this.errorHeight) {
+            this.$emit('setFixedText', this.$refs.collectHeaderText.innerHTML)
             // this.$refs.fixedDiv.innerHTML = this.$refs.collectHeader.innerHTML
-          }else {
-            this.$emit('setFixedText',this.$refs.createorHeaderText.innerHTML)
+          } else {
+            this.$emit('setFixedText', this.$refs.createorHeaderText.innerHTML)
             // this.$refs.fixedDiv.innerHTML = this.$refs.createorHeader.innerHTML
           }
-        }else {
-          this.$emit('setFixedTransFrom',0)
+        } else {
+          this.$emit('setFixedTransFrom', 0)
           // this.$refs.fixedDiv.style.transform = `translate3d(0px, 0px, 0px)`
         }
-      }else {
-        this.$emit('setfixedSwitch',false)
+      } else {
+        this.$emit('setfixedSwitch', false)
         // this.fixedSwitch = false
       }
     }

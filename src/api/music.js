@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {HOST} from 'common/js/config'
+import { HOST } from 'common/js/config'
 
 //  根据歌单ID获取歌单信息
 export const Music_GetListData = (id) => {

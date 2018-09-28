@@ -99,12 +99,12 @@
 </template>
 
 <script>
-import {Music_GetListData,Music_getRanking} from 'api/music'
-import {mapGetters,mapMutations,mapActions} from 'vuex'
-import {CODE} from 'common/js/config'
+import { Music_GetListData, Music_getRanking } from 'api/music'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { CODE } from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import download from 'base/download/download'
-import {setListenNum} from 'common/js/number.js'
+import { setListenNum } from 'common/js/number.js'
 
 export default {
   computed: {
@@ -119,11 +119,11 @@ export default {
   },
   data() {
     return {
-      listData:null,
-      scrollY:0,
-      title:'歌单',
-      fixed:false,
-      scrollTop:false
+      listData: null,
+      scrollY: 0,
+      title: '歌单',
+      fixed: false,
+      scrollTop: false
     }
   },
   created() {
@@ -132,32 +132,32 @@ export default {
     this._getList()
   },
   methods: {
-    toAuthor(id){
+    toAuthor(id) {
       // this.$router.push({path:'/author' + id})
       this.setShowAuthor(false)
       setTimeout(() => {
         this.setAuthorId(id)
         this.setShowAuthor(true)
         this.setNowShow('author')
-      },300)
+      }, 300)
     },
     _randomPlay() {
       // this.randomPlay({
       //   list:this.playList
       // })
       this.selectPlay({
-        list:this.playList,
-        index:0
+        list: this.playList,
+        index: 0
       })
     },
-    scroll(pos){
+    scroll(pos) {
       this.scrollY = pos.y
       // console.log(this.scrollY)
     },
-    toPlayer(index){
+    toPlayer(index) {
       this.selectPlay({
-        list:this.playList,
-        index:index
+        list: this.playList,
+        index: index
       })
     },
     _getNumber(number) {
@@ -184,7 +184,7 @@ export default {
             this._musicList(res.data.playlist.tracks)
           }
         })
-      }else if (this.showPlayListType === 'ranking') {
+      } else if (this.showPlayListType === 'ranking') {
         this.title = '排行榜'
         Music_getRanking(this.listId).then(res => {
           if (res.data.code === CODE) {
@@ -193,11 +193,10 @@ export default {
           }
         })
       }
-        
     },
-    _musicList(list){
-      let _list = []
-      for (let x in list) {
+    _musicList(list) {
+      const _list = []
+      for (const x in list) {
         const obj = {}
         obj.id = list[x].id
         obj.name = list[x].name
@@ -209,14 +208,14 @@ export default {
       this.playList = _list
     },
     ...mapActions([
-      'selectPlay',
+      'selectPlay'
       // 'randomPlay'
     ]),
     ...mapMutations({
-      setNowShow:'SET_NOWSHOW',
-      setShowPlayList:'SET_SHOWPLAYLIST',
-      setShowAuthor:'SET_SHOWAUTHOR',
-      setAuthorId:'SET_AUTHOR_ID'
+      setNowShow: 'SET_NOWSHOW',
+      setShowPlayList: 'SET_SHOWPLAYLIST',
+      setShowAuthor: 'SET_SHOWAUTHOR',
+      setAuthorId: 'SET_AUTHOR_ID'
     })
   },
   components: {
@@ -224,30 +223,30 @@ export default {
     download
   },
   watch: {
-    listId(newID){
+    listId(newID) {
       this.$refs.headerImg.style.filter = `blur(6vw)`
       this.$refs.headerImg.style.webkitFilter = `blur(6vw)`
       this._getList()
     },
-    scrollY(newY){
+    scrollY(newY) {
       const scrollY = Math.abs(newY)
       const authorHeight = this.$refs.author.offsetTop
       const middleHeight = this.$refs.middle.offsetTop - this.$refs.middle.clientHeight + 10
       const headerImg = this.$refs.headerImg
-      const num = 6 - - newY / middleHeight * 6
-      const blur = Math.max(0,Math.min(6,num))
+      const num = 6 - -newY / middleHeight * 6
+      const blur = Math.max(0, Math.min(6, num))
       // console.log(blur)
       headerImg.style.filter = `blur(${blur}vw)`
       headerImg.style.webkitFilter = `blur(${blur}vw)`
       if (scrollY > authorHeight) {
         this.title = this.listData.name
-      }else {
+      } else {
         this.title = '歌单'
       }
 
-      if (-newY > middleHeight){
+      if (-newY > middleHeight) {
         this.fixed = true
-      }else {
+      } else {
         this.fixed = false
       }
     }
