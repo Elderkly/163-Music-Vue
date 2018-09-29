@@ -1,6 +1,6 @@
 <template>
   <transition name="mini">
-      <div class="min-player" v-show="!showPlayer && musicImg !== null" @click="showPlay">
+      <div class="min-player" v-show="!showPlayer && musicImg !== null && playList.length > 0" @click="showPlay">
         <div class="banner">
           <img :src="musicImg">
         </div>
@@ -11,7 +11,7 @@
         <div class="control">
           <i :class="buttonClass" @click.stop="play"></i>
         </div>
-        <div class="min-list">
+        <div class="min-list" @click.stop="showList">
           <i class="icon-gedan"></i>
         </div>
       </div>
@@ -32,7 +32,8 @@ export default {
     ...mapGetters([
       'showPlayer',
       'playItem',
-      'playIng'
+      'playIng',
+      'playList'
     ]),
     buttonClass() {
       return this.playIng ? 'icon-zanting' : 'icon-bofang1'
@@ -46,6 +47,9 @@ export default {
     })
   },
   methods: {
+    showList() {
+      bus.$emit('showList')
+    },
     showPlay() {
       this.setPlayShow(true)
       this.setNowShow('player')

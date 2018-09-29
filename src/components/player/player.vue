@@ -14,7 +14,8 @@
           <div class="turn">
             <img src="./disc_light.png">
             <img src="./disc_light-bg.png" :class="turnClassSlow">
-            <img :src="musicImg" :class="turnClass">
+            <img :src="musicImg" :class="turnClass" v-if="musicImg !== null">
+            <img src="./loading.png" :class="turnClass" v-if="musicImg === null">
           </div>
           <img :class="needleClass" src="./needle-ip6.png">
           <img src="./needle.png">
@@ -48,20 +49,23 @@
           <i class="icon-xiayishouxianxing" @click="last"></i>
           <i :class="buttonClass" @click="play"></i>
           <i class="icon-xiayishouxianxing" @click="next"></i>
-          <i class="icon-icon-test"></i>
+          <i class="icon-icon-test" @click="showList"></i>
         </div>
         <audio ref="audio" :src="musicSrc" 
+              @loadstart="audioLoading"
               @canplay="ready" 
               @error="error"
               @timeupdate="updateTime"
               @ended="ended"
         ></audio>
+        <loading v-if="loadingSwitch"></loading>
       </div>
     </transition>
 </template>
 
 <script>
 import bus from 'common/vue/bus'
+import loading from 'base/loading/loading'
 import { mapGetters, mapMutations } from 'vuex'
 import { shuffle } from 'common/js/util'
 import { Music_GetSrc, Music_GetImg, Music_Comment } from 'api/music'
@@ -71,6 +75,7 @@ import progressBar from 'base/progress-bar/progress-bar'
 export default {
   data() {
     return {
+      loadingSwitch: false,
       musicSrc: null,
       musicImg: null,
       bgImg: null,
@@ -131,11 +136,20 @@ export default {
     ])
   },
   methods: {
+    showList() {
+      bus.$emit('showList')
+    },
     showPlay() {
       this.setPlayShow(true)
       this.setNowShow('player')
     },
+    audioLoading() {
+      // this.loadingSwitch = true
+    },
     ready(e) {
+      setTimeout(() => {
+        this.loadingSwitch = false
+      }, 300)
       this.audioReady = true
       this.sumTime = this.$refs.audio.duration
     },
@@ -293,6 +307,10 @@ export default {
       if (newList.id === oldList.id) {
         return
       }
+      this.loadingSwitch = true
+      this.$refs.audio.pause()
+      this.musicImg = null
+
       this.oldList = oldList
       // console.log(newList,oldList)
       this.$nextTick(() => {
@@ -301,7 +319,8 @@ export default {
     }
   },
   components: {
-    progressBar
+    progressBar,
+    loading
   }
 }
 </script>
@@ -417,6 +436,7 @@ export default {
       left 5vw
       right 0
       margin auto
+      z-index 30
   .tab
     // margin-top 125px
     display flex
