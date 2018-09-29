@@ -1,21 +1,32 @@
-# 163_music
+# Vue网易云音乐播放器
 
-> A Vue.js project
+一款仿网易云音乐App的音乐播放器
 
 ## Build Setup
 
 ``` bash
-# install dependencies
+# 克隆项目
+git clone https://github.com/Elderkly/163_music.git
+
+# 安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# 本地开发环境
 npm run dev
 
-# build for production with minification
+# 构建生产
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 技术栈
+**Vue2** 
+
+**Vuex**
+
+**Vue-router**
+
+**Axios**
+
+**Stylus**
+
+**Better-scroll**
