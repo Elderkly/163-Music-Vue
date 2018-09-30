@@ -1,4 +1,4 @@
-# Vue网易云音乐播放器
+# 163-Music
 
 一款基于Vue的仿网易云音乐App的音乐播放器
 
@@ -52,20 +52,24 @@ npm run build
 
 **登录/注销**
 
-![登录/注销](./gif/登录.gif)
+![登录/注销](https://github.com/Elderkly/ImgRepository/blob/master/163-music/login.gif)
 
 **首页**
 
-![首页](./gif/添加城市.gif)
+![首页](https://github.com/Elderkly/ImgRepository/blob/master/163-music/home.gif)
 
 **我的音乐**
 
-![我的音乐](./gif/切换日期.gif)
+![我的音乐](https://github.com/Elderkly/ImgRepository/blob/master/163-music/my-music.gif)
 
 **搜索**
 
-![搜索](./gif/自适应.gif)
+![搜索](https://github.com/Elderkly/ImgRepository/blob/master/163-music/seasrch.gif)
+
+**歌单作者**
+
+![歌单作者](https://github.com/Elderkly/ImgRepository/blob/master/163-music/author.gif)
 
 **播放**
 
-![播放](./gif/手机端.gif)
+![播放](https://github.com/Elderkly/ImgRepository/blob/master/163-music/player.gif)
