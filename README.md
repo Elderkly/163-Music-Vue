@@ -20,24 +20,22 @@ npm run build
 
 ## 技术栈
 
-**Vue2** 
+- Vue2
 
-**Vuex** 
+- Vuex
 
-**Vue-router** 
+- Vue-router
 
-**Axios** 
+- Axios** 
 
-**Stylus** 
+- Stylus
 
-**Better-scroll** 
-
-**ESlint**
+- Better-scroll
 
 ## 注意事项
 
-- 项目需要搭建后端接口才能正常访问 [api来源](https://github.com/Binaryify/NeteaseCloudMusicApi)
-- 默认接口地址是3000端口 如有更改请到src/common/js/config.js 修改HOST地址
+- 项目需要搭建后端接口才能正常访问 [Api来源](https://github.com/Binaryify/NeteaseCloudMusicApi)
+- 默认接口地址是3000端口 如有更改请到 src/common/js/config.js 修改HOST地址
 - 登录接口需使用真实的网易云账号登录
 
 ## 功能介绍
@@ -48,7 +46,8 @@ npm run build
 - 歌单，歌单作者，我的音乐，用户信息等
 - 音乐播放功能（切歌，播放列表，播放进度显示，切换播放模式）
 
-由于部分接口无法使用加上精力有限所以部分功能还有待完善
+
+**由于部分接口无法使用加上精力有限所以部分功能还有待完善**
 
 ## 项目预览
 
