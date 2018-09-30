@@ -26,7 +26,7 @@ npm run build
 
 - Vue-router
 
-- Axios** 
+- Axios
 
 - Stylus
 
@@ -48,6 +48,7 @@ npm run build
 
 
 **由于部分接口无法使用加上精力有限所以部分功能还有待完善**
+
 
 ## 项目预览
 
