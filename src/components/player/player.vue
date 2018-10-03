@@ -82,19 +82,25 @@ export default {
       Time: 0,
       sumTime: 0,
       percentageNum: 0,
-      comment: 0
+      comment: 0,
+      playSwitch: true
     }
   },
   mounted() {
     //  移动端Audio 自动播放
-    // const _this = this
-    // document.querySelector('html').addEventListener('touchstart',function(){
-    //   _this.$refs.audio.play()
-    // })
     const _this = this
+    document.querySelector('html').addEventListener('touchstart', function() {
+      // console.log(_this.playSwitch)
+      if (_this.playSwitch) {
+        _this.$refs.audio.play()
+        _this.playSwitch = false
+      }
+    })
+    // const _this = this
     bus.$on('setplaying', function() {
       _this.play()
     })
+    // console.log('playerMounted')
   },
   computed: {
     turnClass() {

@@ -1,7 +1,7 @@
 <template>
     <div class="index">
-      <scroll ref="scroll" class="recommend-content" :data="bannerList" v-if="NewList.length > 1">
-        <div>
+      <!-- <scroll ref="scroll" class="recommend-content" :data="bannerList" v-if="NewList.length > 1"> -->
+        <div  class="recommend-content" v-if="NewList.length > 1">
           <div class="banner-wrapper">
             <slider>
               <div v-for="(item,index) in bannerList" :key="index">
@@ -73,7 +73,7 @@
             </div>
           </div>
         </div>
-      </scroll>
+      <!-- </scroll> -->
       <download v-else-if="NewList.length < 1"></download>
       <router-view></router-view>
     </div>
@@ -199,14 +199,17 @@ export default {
 <style lang="stylus">
   @import "~common/stylus/variable"
   .index
-    width 100%
-    position fixed!important
-    top 152px!important
-    bottom 0
+    // width 100%
+    // position fixed!important
+    // top 152px!important
+    // bottom 0
     background #fbfcfd
+    // position relative
+    
+    margin-top 152px
   .recommend-content
-    height 100%
-    overflow hidden
+    // height 100%
+    // overflow hidden
   .banner-wrapper
     width 100%
     a

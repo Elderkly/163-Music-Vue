@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <mheader></mheader>
-    <tab :list="['发现','我的','账号']"></tab>
+    <div class="App-fixed">
+      <mheader></mheader>
+      <tab :list="['发现','我的','账号']"></tab>
+    </div>
       <!-- <keep-alive> -->
         <!-- <router-view/> -->
         <!-- <index></index>
@@ -57,4 +59,9 @@ export default {
 <style lang="stylus" scoped>
   #app
     overflow hidden
+  .App-fixed
+    position fixed
+    width 100%
+    top 0 
+    z-index 100
 </style>
