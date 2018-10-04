@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <scroll class="father-web">
+    <!-- <scroll class="father-web"> -->
       <div class="user">
         <div class="user-top" @click="toAuthor">
           <div class="icon"><img v-lazy="userData.profile.avatarUrl"></div>
@@ -145,9 +144,7 @@
           </div>
         </div>
       </div>
-    </scroll>
-    <router-view></router-view>
-  </div>
+    <!-- </scroll> -->
 </template>
 
 <script>
@@ -207,8 +204,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .father-web
+  .user
     background #eeeff0
+    margin-top 152px
   .user-top
     height 180px
     padding 30px

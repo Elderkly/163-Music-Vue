@@ -231,6 +231,10 @@ export default {
     },
     last() {
       if (!this.audioReady) return
+      if (this.playType === 'single') {
+        this.loop()
+        return
+      }
       const index = this.playIndex - 1 < 0 ? this.playList.length - 1 : this.playIndex - 1
       this.setplayIng(false)
       this.setplayIndex(index)
@@ -238,10 +242,22 @@ export default {
     },
     next() {
       if (!this.audioReady) return
+      if (this.playType === 'single') {
+        this.loop()
+        return
+      }
       const index = this.playIndex + 1 === this.playList.length ? 0 : this.playIndex + 1
       this.setplayIng(false)
       this.setplayIndex(index)
       this.audioReady = false
+    },
+    //  单曲循环
+    loop() {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+      setTimeout(() => {
+        this.setplayIng(true)
+      }, 30)
     },
     play() {
       this.playIng ? this.$refs.audio.pause() : this.$refs.audio.play()

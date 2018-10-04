@@ -80,6 +80,7 @@ export default {
       const collectHeader = this.$refs.collectHeader.offsetTop
       const collectClientHeight = collectHeader - this.$refs.collectHeader.clientHeight
       const offsetY = newY + collectClientHeight > -this.$refs.collectHeader.clientHeight ? newY + collectClientHeight : 0
+      // console.log(pageY, createorHeader - this.errorHeight)
       if (pageY > createorHeader - this.errorHeight) {
         this.$emit('setfixedSwitch', true)
         // this.fixedSwitch = true

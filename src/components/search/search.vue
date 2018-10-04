@@ -43,7 +43,9 @@
         </div>
       </div>
     </scroll>
-    <minloading v-if="loading"></minloading>
+    <div class="loading" v-if="loading">
+      <minloading ></minloading>
+    </div>
   </div>
 </template>
 
@@ -196,6 +198,13 @@ export default {
 
 <style lang="stylus" scoped>
 @import "~common/stylus/variable"
+  .loading
+    position fixed
+    top 85px
+    width 100%
+    height calc(100% - 85px)
+    background $color-background
+    padding-top 200px
   .search
     height 85px
     line-height 85px
