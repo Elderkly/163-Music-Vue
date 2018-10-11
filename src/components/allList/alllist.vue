@@ -63,6 +63,7 @@ export default {
       this.setListId(id)
       this.setNowShow('playlist')
       this.setShowPlayList(true)
+      this.setListType('list')
     },
     _getNewList() {
       Home_getPersonalizedList().then(res => {
@@ -87,7 +88,8 @@ export default {
     ...mapMutations({
       setListId: 'SET_LIST_ID',
       setNowShow: 'SET_NOWSHOW',
-      setShowPlayList: 'SET_SHOWPLAYLIST'
+      setShowPlayList: 'SET_SHOWPLAYLIST',
+      setListType: 'SET_LIST_TYPE'
     })
   },
   watch: {

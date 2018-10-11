@@ -1,13 +1,13 @@
 <template>
     <div class="index">
-      <!-- <scroll ref="scroll" class="recommend-content" :data="bannerList" v-if="NewList.length > 1"> -->
-        <div  class="recommend-content" v-if="NewList.length > 1">
+      <scroll ref="scroll" class="recommend-content" :data="NewList" v-if="bannerList.length > 1">
+        <div v-if="bannerList.length > 1">
           <div class="banner-wrapper">
             <slider>
               <div v-for="(item,index) in bannerList" :key="index">
                 <div class="banner-background"></div>
                 <a :href="'https://music.163.com'+item.url">
-                  <img class="banner-content" :src="item.picUrl" >
+                  <img class="banner-content" :src="item.picUrl" @load="imgLoad(index)">
                 </a>
               </div>
             </slider>
@@ -73,7 +73,7 @@
             </div>
           </div>
         </div>
-      <!-- </scroll> -->
+      </scroll>
       <download v-else-if="NewList.length < 1"></download>
       <router-view></router-view>
     </div>
@@ -94,14 +94,19 @@ export default {
     return {
       bannerList: [],
       RecommendList: [],
-      NewList: [],
-      biglist: []
+      NewList: []
+      // biglist: []
     }
   },
   created() {
     this._getBanner()
   },
   methods: {
+    imgLoad(index) {
+      if (index + 1 === this.bannerList.length) {
+        this._getNewList()
+      }
+    },
     TomusicList(id) {
       // this.setListType('sonlist')
       this.setListId(id)
@@ -145,11 +150,11 @@ export default {
             _Array.name = resData[x].name
             _Array.playCount = setListenNum(resData[x].playCount)
             Json.push(_Array)
-            this.biglist.push(_Array)
+            // this.biglist.push(_Array)
           }
           this.RecommendList = Json
         }
-        this._getNewList()
+        // this._getNewList()
       })
     },
     _getNewList() {
@@ -164,7 +169,7 @@ export default {
             _Array.name = resData[x].name
             _Array.author = resData[x].song.artists[0].name
             Json.push(_Array)
-            this.biglist.push(_Array)
+            // this.biglist.push(_Array)
           }
           this.NewList = Json
         }
@@ -199,17 +204,17 @@ export default {
 <style lang="stylus">
   @import "~common/stylus/variable"
   .index
-    // width 100%
-    // position fixed!important
+    width 100%
+    position fixed!important
     // top 152px!important
     // bottom 0
     background #fbfcfd
     // position relative
-    
     margin-top 152px
+    height calc(100% - 152px)
   .recommend-content
-    // height 100%
-    // overflow hidden
+    height 100%
+    overflow hidden
   .banner-wrapper
     width 100%
     a

@@ -176,9 +176,11 @@ export default {
         return
       }
       this.listData = null
+      console.log(this.showPlayListType)
       if (this.showPlayListType === 'list') {
         this.title = '歌单'
         Music_GetListData(this.listId).then(res => {
+          console.log(res)
           if (res.data.code === CODE) {
             this.listData = res.data.playlist
             this._musicList(res.data.playlist.tracks)
@@ -187,6 +189,7 @@ export default {
       } else if (this.showPlayListType === 'ranking') {
         this.title = '排行榜'
         Music_getRanking(this.listId).then(res => {
+          console.log(res)
           if (res.data.code === CODE) {
             this.listData = res.data.playlist
             this._musicList(res.data.playlist.tracks)

@@ -90,13 +90,12 @@ export default {
     //  移动端Audio 自动播放
     const _this = this
     document.querySelector('html').addEventListener('touchstart', function() {
-      // console.log(_this.playSwitch)
+      console.log(_this.playSwitch)
       if (_this.playSwitch) {
         _this.$refs.audio.play()
         _this.playSwitch = false
       }
     })
-    // const _this = this
     bus.$on('setplaying', function() {
       _this.play()
     })

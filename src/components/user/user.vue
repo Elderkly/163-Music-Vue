@@ -1,5 +1,5 @@
 <template>
-    <!-- <scroll class="father-web"> -->
+    <scroll class="father-web">
       <div class="user">
         <div class="user-top" @click="toAuthor">
           <div class="icon"><img v-lazy="userData.profile.avatarUrl"></div>
@@ -144,7 +144,7 @@
           </div>
         </div>
       </div>
-    <!-- </scroll> -->
+    </scroll>
 </template>
 
 <script>
@@ -185,12 +185,10 @@ export default {
     },
     logout() {
       setCookie('userId', null, -1)
-      this.setLogin(false)
-      // $store.commit('SET_LOGIN',123)
       this.$router.push('/login')
     },
     ...mapMutations({
-      setLogin: 'SET_LOGIN',
+      // setLogin: 'SET_LOGIN',
       setShowAuthor: 'SET_SHOWAUTHOR',
       setAuthorId: 'SET_AUTHOR_ID',
       setNowShow: 'SET_NOWSHOW'
@@ -206,7 +204,7 @@ export default {
 <style lang="stylus" scoped>
   .user
     background #eeeff0
-    margin-top 152px
+    // margin-top 152px
   .user-top
     height 180px
     padding 30px

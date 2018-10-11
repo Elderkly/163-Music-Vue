@@ -4,12 +4,6 @@
       <mheader></mheader>
       <tab :list="['发现','我的','账号']"></tab>
     </div>
-      <!-- <keep-alive> -->
-        <!-- <router-view/> -->
-        <!-- <index></index>
-        <my-music></my-music>
-        <user></user> -->
-      <!-- </keep-alive> -->
     <keep-alive>
       <router-view/>
     </keep-alive>
@@ -17,7 +11,6 @@
     <author></author>
     <musiclist></musiclist>
     <miniplayer></miniplayer>
-
     <playlist></playlist>
   </div>
 </template>

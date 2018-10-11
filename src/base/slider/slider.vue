@@ -69,8 +69,8 @@ export default {
         snap: true,
         snapLoop: this.loop, // 循环
         snapThreshold: 0.3,
-        snaSpeed: 400 // 速度
-        // click: false
+        snaSpeed: 400, // 速度
+        click: true
       })
       // 滚动结束执行
       this.slider.on('scrollEnd', () => {
